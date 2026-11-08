@@ -1,0 +1,175 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/gabrielSantosLima/harness/setup/harness.schema.json",
+  "title": ".harness.json",
+  "description": "Setup state committed by every project generated from the harness.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "harness",
+    "project",
+    "git",
+    "quality",
+    "version",
+    "release",
+    "skills"
+  ],
+  "properties": {
+    "harness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version"],
+      "properties": {
+        "version": { "type": "integer", "const": 2 },
+        "commit": {
+          "type": "string",
+          "description": "Pinned harness commit used to generate the project."
+        }
+      }
+    },
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "slug", "description", "type"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "slug": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "description": { "type": "string", "minLength": 1 },
+        "type": {
+          "enum": ["web", "mobile", "desktop", "library", "data"]
+        },
+        "license": { "type": "string", "default": "MIT" },
+        "owner": { "type": "string" },
+        "repo": {
+          "type": "string",
+          "pattern": "^[^/]+/[^/]+$"
+        }
+      }
+    },
+    "git": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["commitAutonomy", "defaultBranch"],
+      "properties": {
+        "commitAutonomy": {
+          "enum": ["commit-and-push-when-asked", "commit-only-when-asked", "strict"]
+        },
+        "defaultBranch": { "type": "string", "default": "main" }
+      }
+    },
+    "quality": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["checks", "ciDepth", "os"],
+      "properties": {
+        "checks": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "default": []
+        },
+        "ciDepth": { "enum": ["full", "ci", "release-only"] },
+        "os": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" },
+          "default": ["ubuntu-latest"]
+        }
+      }
+    },
+    "build": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "command": { "type": "string" },
+        "artifacts": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "attachToRelease": { "type": "boolean", "default": true }
+      }
+    },
+    "version": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source"],
+      "properties": {
+        "source": { "enum": ["tags", "file"] },
+        "file": { "type": "string" },
+        "pointer": {
+          "type": "string",
+          "description": "Field path inside the version file, for example version or mod_version."
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "source": { "const": "file" } } },
+          "then": { "required": ["file", "pointer"] }
+        }
+      ]
+    },
+    "release": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["trigger", "notesLanguage", "attachArtifacts"],
+      "properties": {
+        "trigger": { "const": "workflow_dispatch" },
+        "notesLanguage": {
+          "enum": ["en", "pt-BR", "es"]
+        },
+        "sections": {
+          "type": "array",
+          "items": {
+            "enum": ["features", "fixes", "chores", "other", "known-issues", "install"]
+          },
+          "default": ["features", "fixes", "chores", "other", "known-issues"]
+        },
+        "attachArtifacts": { "type": "boolean" }
+      }
+    },
+    "deploy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "target": {
+          "enum": ["none", "github-pages", "other"],
+          "default": "none"
+        },
+        "trigger": {
+          "enum": ["on-release", "on-push", "manual"]
+        },
+        "artifact": {
+          "type": "string",
+          "description": "Directory produced by the build and published by the deploy workflow."
+        }
+      }
+    },
+    "skills": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "commit-and-push",
+          "release-summary",
+          "release-cut",
+          "add-skill"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "hygiene": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "pullRequestTemplate": { "type": "boolean", "default": true },
+        "codeowners": { "type": "boolean", "default": true },
+        "codeownersOwner": { "type": "string" }
+      }
+    },
+    "ignore": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}
