@@ -5,6 +5,11 @@ description: A universal, stack-agnostic project setup harness and reusable skil
 
 <div align="center">
 
+<picture>
+  <source srcset="assets/logo-dark.svg" media="(prefers-color-scheme: dark)">
+  <img src="assets/logo.svg" alt="harness" width="96" height="96">
+</picture>
+
 # harness
 
 A universal, stack-agnostic project setup harness and reusable skill library.

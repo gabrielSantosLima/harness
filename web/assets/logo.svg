@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" role="img" aria-label="harness">
+  <g stroke-linecap="round" stroke-linejoin="round" stroke-width="4.5">
+    <path d="M8 12C24 12 30 32 42 32" stroke="#93A8F5"/>
+    <path d="M8 22C24 22 30 32 42 32" stroke="#5570E8"/>
+    <path d="M8 32H42" stroke="#2A4BD7"/>
+    <path d="M8 42C24 42 30 32 42 32" stroke="#5570E8"/>
+    <path d="M8 52C24 52 30 32 42 32" stroke="#93A8F5"/>
+    <path d="M42 32H54" stroke="#F5A524"/>
+    <path d="M49 27L54 32L49 37" stroke="#F5A524"/>
+  </g>
+</svg>

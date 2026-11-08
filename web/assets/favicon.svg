@@ -1,4 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="14" fill="#1f6feb"/>
-  <path d="M18 20h6v24h-6zM28 20h18v6H34v4h10v6H34v8h-6z" fill="#fff"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" role="img" aria-label="harness">
+  <rect width="64" height="64" rx="14" fill="#1F3A93"/>
+  <g stroke-linecap="round" stroke-linejoin="round" stroke-width="4.2">
+    <path d="M9 13C24 13 30 32 42 32" stroke="#FFFFFF" stroke-opacity=".55"/>
+    <path d="M9 22.5C24 22.5 30 32 42 32" stroke="#FFFFFF" stroke-opacity=".78"/>
+    <path d="M9 32H42" stroke="#FFFFFF"/>
+    <path d="M9 41.5C24 41.5 30 32 42 32" stroke="#FFFFFF" stroke-opacity=".78"/>
+    <path d="M9 51C24 51 30 32 42 32" stroke="#FFFFFF" stroke-opacity=".55"/>
+    <path d="M42 32H54" stroke="#FBBF24"/>
+    <path d="M49 27L54 32L49 37" stroke="#FBBF24"/>
+  </g>
 </svg>

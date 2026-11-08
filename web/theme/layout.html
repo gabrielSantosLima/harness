@@ -16,7 +16,13 @@
   <a class="skip" href="#main">Skip to content</a>
   <header class="topbar">
     <button class="menu-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">☰</button>
-    <a class="brand" href="{{root}}index.html">harness</a>
+    <a class="brand" href="{{root}}index.html">
+      <picture>
+        <source srcset="{{root}}assets/logo-dark.svg" media="(prefers-color-scheme: dark)">
+        <img class="brand-mark" src="{{root}}assets/logo.svg" alt="" width="26" height="26">
+      </picture>
+      harness
+    </a>
     <span class="version">{{version}}</span>
     <div class="topbar-actions">
       <button class="search-button" type="button" aria-label="Search documentation">Search</button>

@@ -1,5 +1,10 @@
 <div align="center">
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/gabrielSantosLima/harness/main/web/assets/logo-dark.svg">
+  <img src="https://raw.githubusercontent.com/gabrielSantosLima/harness/main/web/assets/logo.svg" alt="harness" width="112" />
+</picture>
+
 # harness
 
 Um harness universal e agnóstico de stack para configurar projetos, com uma biblioteca reutilizável de skills.

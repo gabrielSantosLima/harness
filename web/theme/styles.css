@@ -73,10 +73,19 @@ code, pre { font-family: var(--mono); }
 }
 
 .brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
   font-size: 18px;
   font-weight: 700;
   color: var(--fg);
   letter-spacing: -0.02em;
+}
+
+.brand-mark {
+  display: block;
+  width: 26px;
+  height: 26px;
 }
 
 .version {
