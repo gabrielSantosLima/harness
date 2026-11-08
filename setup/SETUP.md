@@ -8,6 +8,10 @@ result.
 The agent runs this playbook from a harness working tree. The target repository
 can be any directory.
 
+When the harness is not available locally, use `setup/PROMPT.md`: it clones the
+public harness into a temporary directory, follows this same playbook and removes
+the clone afterwards. Nothing in this playbook depends on the clone location.
+
 ## Modes
 
 | Mode | When | Behavior |

@@ -1,0 +1,7 @@
+
+# Local-only files (harness)
+PLAN.md
+NOTES.md
+.env
+node_modules/
+dist/

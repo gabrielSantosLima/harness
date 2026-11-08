@@ -26,6 +26,9 @@
 - Published artifact: `{{deployArtifact}}`.
 {{/if}}
 
+{{#if isHarness}}
+{{sec_harness}}
+{{/if}}
 {{sec_skills}}
 
 {{sec_safety}}

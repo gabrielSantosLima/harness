@@ -19,6 +19,10 @@ Read these files before starting:
 Run everything from the harness working tree. The target repository can be any
 directory.
 
+When the harness is not available locally, use `setup/PROMPT.md` from the public
+repository: clone it into a temporary directory, run this skill from there, and
+remove the clone afterwards.
+
 ## 1. Choose the mode
 
 - `new`: empty directory or brand-new repository.

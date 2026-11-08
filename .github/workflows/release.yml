@@ -1,0 +1,123 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: "Version bump type (ignored when an explicit version is provided)"
+        required: true
+        default: patch
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+          - prerelease
+          - premajor
+          - preminor
+          - prepatch
+      preid:
+        description: "Pre-release identifier (used by pre* bumps), for example alpha"
+        required: false
+        default: alpha
+        type: string
+      version:
+        description: "Explicit version (optional; overrides the bump type)"
+        required: false
+        default: ""
+        type: string
+      summary:
+        description: "Short release summary (optional)"
+        required: false
+        default: ""
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+
+  quality:
+    name: Quality
+    uses: ./.github/workflows/ci.yml
+
+  release:
+    name: Release
+
+    needs: quality
+
+    runs-on: ubuntu-latest
+    outputs:
+      version: $
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Resolve previous tag
+        id: prev
+        run: |
+          PREV=$(git describe --tags --abbrev=0 --match "v*" 2>/dev/null || echo "")
+          echo "tag=$PREV" >> "$GITHUB_OUTPUT"
+
+      - name: Resolve next version
+        id: version
+        env:
+          BUMP: $
+          PREID: $
+          VERSION_INPUT: $
+          PREV_TAG: $
+        run: |
+
+          if [ -n "$VERSION_INPUT" ]; then
+            VERSION="${VERSION_INPUT#v}"
+          else
+            VERSION=$(node scripts/next-version.mjs \
+              --current "${PREV_TAG#v}" \
+              --bump "$BUMP" \
+              --preid "$PREID")
+          fi
+
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Generate release notes
+        env:
+          SUMMARY: $
+          VERSION: $
+        run: |
+          node scripts/release-notes.mjs \
+            --from "$" \
+            --to HEAD \
+            --version "$VERSION" \
+            --out NOTES.md
+
+      - name: Tag
+        env:
+          VERSION: $
+        run: |
+          git tag "v$VERSION"
+          git push origin "v$VERSION"
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: $
+          VERSION: $
+        run: |
+          PRERELEASE=""
+          case "$VERSION" in *-*) PRERELEASE="--prerelease" ;; esac
+          gh release create "v$VERSION" \
+            --title "v$VERSION" \
+            --notes-file NOTES.md \
+            $PRERELEASE
+

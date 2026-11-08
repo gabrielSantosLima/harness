@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_call:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-$-$
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Quality
+    runs-on: $
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ["ubuntu-latest","windows-latest"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run checks
+        run: |
+          node tests/run.mjs
+

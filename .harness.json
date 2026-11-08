@@ -1,0 +1,67 @@
+{
+  "harness": {
+    "version": 2,
+    "commit": "343b79445c9f33f3b48adc5c8f6cd345fef86e57"
+  },
+  "project": {
+    "name": "Harness",
+    "slug": "harness",
+    "description": "A universal, stack-agnostic project setup harness and skill library.",
+    "type": "library",
+    "license": "MIT",
+    "owner": "gabrielSantosLima",
+    "repo": "gabrielSantosLima/harness"
+  },
+  "git": {
+    "commitAutonomy": "commit-and-push-when-asked",
+    "defaultBranch": "main"
+  },
+  "quality": {
+    "checks": [
+      "node tests/run.mjs"
+    ],
+    "ciDepth": "ci",
+    "os": [
+      "ubuntu-latest",
+      "windows-latest"
+    ]
+  },
+  "version": {
+    "source": "tags"
+  },
+  "release": {
+    "trigger": "workflow_dispatch",
+    "notesLanguage": "en",
+    "sections": [
+      "features",
+      "fixes",
+      "chores",
+      "other",
+      "known-issues"
+    ],
+    "attachArtifacts": false
+  },
+  "deploy": {
+    "target": "none",
+    "trigger": "manual",
+    "artifact": "dist"
+  },
+  "skills": [
+    "commit-and-push",
+    "release-summary",
+    "release-cut",
+    "add-skill"
+  ],
+  "hygiene": {
+    "pullRequestTemplate": true,
+    "codeowners": true,
+    "codeownersOwner": "@gabrielSantosLima"
+  },
+  "ignore": [
+    "PLAN.md",
+    "NOTES.md",
+    ".env",
+    "node_modules/",
+    "dist/"
+  ]
+}

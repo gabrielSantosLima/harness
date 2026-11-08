@@ -267,6 +267,8 @@ function buildContext(answers, options) {
     isLibrary: project.type === "library",
     isData: project.type === "data",
     skills: answers.skills,
+    skillsRoot: options.skillsRoot ?? ".agent/skills",
+    isHarness: options.skillsRoot === "skills",
     skillBullets: answers.skills
       .map((id) => `- \`${id}\` - ${SKILL_DESCRIPTIONS[id] ?? "reusable workflow."}`)
       .join("\n"),
@@ -349,6 +351,7 @@ function buildOutputs(context) {
     sec_skills: section("skills", context),
     sec_safety: section("safety", context),
     sec_data: context.isData ? section("data", context) : "",
+    sec_harness: context.isHarness ? section("harness", context) : "",
   });
 
   const templateName = `RELEASE_TEMPLATE.${context.notesLanguage}.md`;
@@ -503,6 +506,17 @@ function addSubmodule(root, url, options) {
     execFileSync("git", ["-C", join(root, ".agent"), "sparse-checkout", "set", "skills"], {
       stdio: "ignore",
     });
+    if (options.commit) {
+      try {
+        execFileSync(
+          "git",
+          ["-C", join(root, ".agent"), "checkout", "--quiet", options.commit],
+          { stdio: "ignore" },
+        );
+      } catch {
+        // The pinned commit may be unreachable in a shallow clone; HEAD stays.
+      }
+    }
     return `submodule added from ${url} (sparse: skills/)`;
   } catch {
     return `submodule could not be added from ${url}; add it manually`;
@@ -516,7 +530,7 @@ function main() {
   const target = arg("--target");
   if (!answersPath || !target) {
     console.error(
-      "Usage: node scripts/render.mjs --answers <file> --target <dir> [--dry-run] [--force] [--merge] [--submodule <url>] [--commit <hash>]",
+      "Usage: node scripts/render.mjs --answers <file> --target <dir> [--dry-run] [--force] [--merge] [--submodule <url>] [--commit <hash>] [--skills-root <path>]",
     );
     process.exit(1);
   }
@@ -527,6 +541,7 @@ function main() {
     merge: flag("--merge"),
     submoduleUrl: arg("--submodule"),
     commit: arg("--commit"),
+    skillsRoot: arg("--skills-root"),
   };
 
   const answers = loadAnswers(resolve(answersPath));
