@@ -13,6 +13,7 @@ repository, the source of truth is `skills/`.
 | `release-cut` | Trigger, watch and verify a release. | Yes |
 | `github-pages` | Publish a static site or generated docs to GitHub Pages. | Optional |
 | `readme` | Create, standardize or translate a README. | Optional |
+| `logo` | Design a logo system with five versions before SVG. | Optional |
 | `add-skill` | Create a new skill or a proposal for one. | Yes |
 | `project-setup` | Configure a repository from the harness. | Harness only |
 

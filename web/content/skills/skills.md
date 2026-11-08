@@ -18,6 +18,7 @@ in the harness repository and are exposed to projects through `.agent/`.
 | `release-cut` | Trigger and verify a release | Yes |
 | `github-pages` | Publish a static site or docs to Pages | Optional |
 | `readme` | Create, standardize or translate a README | Optional |
+| `logo` | Design a logo with five versions before SVG | Optional |
 | `add-skill` | Create a new skill or proposal | Yes |
 
 ## How projects consume skills
@@ -161,6 +162,24 @@ Task: standardize the README using the harness template.
 Asks for languages, logo, badges and sections, resolves `owner/repo` from the
 remote and writes `README.md` plus translations. Uses a centered header, badges
 and the language selector. Preserves existing content and never invents features.
+
+### logo
+
+**Run remotely**
+
+```text
+Use the harness at https://github.com/gabrielSantosLima/harness to run the skill
+"logo" in this repository, without configuring the project.
+
+Task: design a logo for this project and show me five versions before creating
+any SVG.
+```
+
+Interactive logo design. It asks about purpose, audience, tone and constraints;
+offers 6–8 concept directions when there is no initial idea; then presents five
+distinct versions and waits for approval before writing any SVG. After approval
+it builds the mark, dark, monochrome, favicon and optional wordmark variants and
+validates them at 16–200 px.
 
 ### add-skill
 
