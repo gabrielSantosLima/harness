@@ -48,7 +48,7 @@ function getValue(context, key) {
 }
 
 const TOKEN =
-  /(?<!\$)\{\{#(if|unless)\s+([\w.]+)\}\}|\{\{\/(if|unless)\}\}|\{\{else\}\}|\{\{\s*([\w.]+)\s*\}\}/g;
+  /(?<!\$)\{\{#(if|unless)\s+([\w.]+)\}\}|\{\{\/(if|unless)\}\}|\{\{else\}\}|(?<!\$)\{\{\s*([\w.]+)\s*\}\}/g;
 
 function targetOf(parent) {
   if (!parent || parent.type !== "if") return parent.children;

@@ -1,7 +1,7 @@
 {
   "harness": {
     "version": 2,
-    "commit": "ac24adce7455d5e7d5d192aef36f77e97581f54e"
+    "commit": "e4418ef66a7cd9c6ae3fd25a818cb3ce46c3045d"
   },
   "project": {
     "name": "Harness",

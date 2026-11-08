@@ -35,6 +35,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: release
+  cancel-in-progress: false
+
 jobs:
 
   quality:
@@ -48,7 +52,7 @@ jobs:
 
     runs-on: ubuntu-latest
     outputs:
-      version: $
+      version: ${{ steps.version.outputs.version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -74,10 +78,10 @@ jobs:
       - name: Resolve next version
         id: version
         env:
-          BUMP: $
-          PREID: $
-          VERSION_INPUT: $
-          PREV_TAG: $
+          BUMP: ${{ inputs.bump }}
+          PREID: ${{ inputs.preid }}
+          VERSION_INPUT: ${{ inputs.version }}
+          PREV_TAG: ${{ steps.prev.outputs.tag }}
         run: |
 
           if [ -n "$VERSION_INPUT" ]; then
@@ -93,26 +97,26 @@ jobs:
 
       - name: Generate release notes
         env:
-          SUMMARY: $
-          VERSION: $
+          SUMMARY: ${{ inputs.summary }}
+          VERSION: ${{ steps.version.outputs.version }}
         run: |
           node scripts/release-notes.mjs \
-            --from "$" \
+            --from "${{ steps.prev.outputs.tag }}" \
             --to HEAD \
             --version "$VERSION" \
             --out NOTES.md
 
       - name: Tag
         env:
-          VERSION: $
+          VERSION: ${{ steps.version.outputs.version }}
         run: |
           git tag "v$VERSION"
           git push origin "v$VERSION"
 
       - name: Create GitHub release
         env:
-          GH_TOKEN: $
-          VERSION: $
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.version.outputs.version }}
         run: |
           PRERELEASE=""
           case "$VERSION" in *-*) PRERELEASE="--prerelease" ;; esac

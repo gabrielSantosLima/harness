@@ -10,13 +10,13 @@ permissions:
   contents: read
 
 concurrency:
-  group: ci-$-$
+  group: ci-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   quality:
     name: Quality
-    runs-on: $
+    runs-on: ${{ matrix.os }}
 
     strategy:
       fail-fast: false

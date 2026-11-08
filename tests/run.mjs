@@ -120,6 +120,19 @@ test("web: full CI, build, Pages on release", () => {
   assert(!agents.includes("## Architecture"), "architecture is out of scope");
 });
 
+test("web: GitHub expressions survive rendering", () => {
+  const target = join(TMP, "fixture-web");
+  const release = read(target, ".github/workflows/release.yml");
+  assert(release.includes("${{ inputs.bump }}"), "release input expression stripped");
+  assert(
+    release.includes("${{ steps.version.outputs.version }}"),
+    "release step output stripped",
+  );
+  assert(!/^\s+\w+: \$$/m.test(release), "a GitHub expression was truncated to $");
+  const ci = read(target, ".github/workflows/ci.yml");
+  assert(ci.includes("${{ github.ref }}"), "CI concurrency expression stripped");
+});
+
 test("mobile: checks only, no deploy, pt-BR notes", () => {
   const target = join(TMP, "fixture-mobile");
   expectFile(target, ".github/workflows/ci.yml");
