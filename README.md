@@ -5,6 +5,7 @@
 A universal, stack-agnostic project setup harness and reusable skill library.
 
 [![CI](https://github.com/gabrielSantosLima/harness/actions/workflows/ci.yml/badge.svg)](https://github.com/gabrielSantosLima/harness/actions/workflows/ci.yml)
+[![Docs](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://gabrielSantosLima.github.io/harness/)
 [![Release](https://img.shields.io/github/v/release/gabrielSantosLima/harness?label=release)](https://github.com/gabrielSantosLima/harness/releases)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
@@ -136,11 +137,13 @@ No per-project adapter file is generated.
 ```bash
 node tests/run.mjs        # run the end-to-end suite
 node tests/pilot.mjs      # run the new/adopt/update pilots
+node web/build.mjs --check # build the documentation site and verify links
 ```
 
 Every change to `templates/`, `guidelines/` or `scripts/` must keep the suite
 green for all five project types.
 
+The documentation is published at <https://gabrielSantosLima.github.io/harness/>.
 See [`docs/pilots.md`](docs/pilots.md) for the recorded pilots, including the
 adoption of a real public repository.
 

@@ -12,6 +12,7 @@ A library project. It ships as a reusable package, CLI or archive.
 | --- | --- |
 | Check | `node tests/run.mjs` |
 | Check | `node tests/pilot.mjs` |
+| Check | `node web/build.mjs --check` |
 | Release | `gh workflow run release.yml -f bump=minor -f summary="..."` |
 
 ## Language rules
@@ -75,6 +76,7 @@ A library project. It ships as a reusable package, CLI or archive.
 
 - `node tests/run.mjs`
 - `node tests/pilot.mjs`
+- `node web/build.mjs --check`
 - Run the declared checks before declaring any task done.
 
 ## Operating this repository

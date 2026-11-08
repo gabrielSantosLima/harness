@@ -30,4 +30,5 @@ jobs:
         run: |
           node tests/run.mjs
           node tests/pilot.mjs
+          node web/build.mjs --check
 
