@@ -124,10 +124,14 @@ No per-project adapter file is generated.
 
 ```bash
 node tests/run.mjs        # run the end-to-end suite
+node tests/pilot.mjs      # run the new/adopt/update pilots
 ```
 
 Every change to `templates/`, `guidelines/` or `scripts/` must keep the suite
 green for all five project types.
+
+See [`docs/pilots.md`](docs/pilots.md) for the recorded pilots, including the
+adoption of a real public repository.
 
 ## Releasing the harness
 

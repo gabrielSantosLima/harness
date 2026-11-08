@@ -125,9 +125,28 @@ function section(name, context) {
   return render(read(join(HARNESS_ROOT, "guidelines", `${name}.md`)), context).trim();
 }
 
+const HEADING_ALIASES = {
+  "commits and pushes": ["committing and pushing", "commits", "git workflow", "git"],
+  "versioning and releases": ["releases", "release", "versioning"],
+  deploy: ["deployment", "deploying"],
+  "secrets and safety": ["security", "safety", "secrets"],
+  "ci and build": ["ci", "build", "ci/cd", "build and ci"],
+  "language rules": ["language", "languages"],
+  skills: ["agent skills"],
+  commands: ["command reference", "build and test", "development"],
+};
+
+function canonicalHeading(heading) {
+  const value = heading.trim().toLowerCase();
+  for (const [canonical, aliases] of Object.entries(HEADING_ALIASES)) {
+    if (value === canonical || aliases.includes(value)) return canonical;
+  }
+  return value;
+}
+
 function mergeAgents(existing, generated) {
   const headings = new Set(
-    [...existing.matchAll(/^##\s+(.+)$/gm)].map((match) => match[1].trim().toLowerCase()),
+    [...existing.matchAll(/^##\s+(.+)$/gm)].map((match) => canonicalHeading(match[1])),
   );
   const sections = [];
   let current = null;
@@ -142,7 +161,9 @@ function mergeAgents(existing, generated) {
   }
   if (current) sections.push(current);
 
-  const missing = sections.filter((item) => !headings.has(item.heading.toLowerCase()));
+  const missing = sections.filter(
+    (item) => !headings.has(canonicalHeading(item.heading)),
+  );
   if (!missing.length) return existing;
   const appended = missing
     .map((item) => `## ${item.heading}\n\n${item.body.join("\n").trim()}`)

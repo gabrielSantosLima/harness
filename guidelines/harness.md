@@ -10,7 +10,7 @@
 - `templates/` holds deterministic assets; `guidelines/` holds composable
   `AGENTS.md` sections; `skills/` is the skill source of truth.
 - After changing templates, guidelines or scripts, run `node tests/run.mjs` and
-  keep every test green.
+  `node tests/pilot.mjs`, and keep every test green.
 - Never let a template change break rendering for any of the five project types.
 - Do not add stack-specific, framework-specific or architecture guidance here.
   Those belong in a future optional skill.

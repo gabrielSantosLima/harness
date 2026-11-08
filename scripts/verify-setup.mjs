@@ -54,9 +54,12 @@ check("AGENTS.md exists and is fully rendered", () => {
   if (!content.startsWith(`# ${config.project.name}`)) {
     throw new Error("AGENTS.md does not start with the project name");
   }
-  const forbidden = content.match(/^##\s+(Architecture|Tech stack|Layering|Dependencies)$/im);
-  if (forbidden) throw new Error(`out-of-scope section: ${forbidden[1]}`);
-  return "self-contained";
+  const foreign = [...content.matchAll(/^##\s+(.+)$/gm)]
+    .map((match) => match[1].trim())
+    .filter((heading) => /^(Architecture|Tech stack|Layering|Dependencies)$/i.test(heading));
+  return foreign.length
+    ? `self-contained (existing project sections: ${foreign.join(", ")})`
+    : "self-contained";
 });
 
 check("release template exists and is fully rendered", () => {

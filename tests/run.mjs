@@ -186,6 +186,20 @@ test("adopt: without --merge an existing AGENTS.md is skipped", () => {
   assert(!read(target, "AGENTS.md").includes("## Commits and pushes"));
 });
 
+test("adopt: heading aliases avoid semantic duplicates", () => {
+  const target = fresh("merge-alias");
+  writeFileSync(
+    join(target, "AGENTS.md"),
+    "# Web Fixture\n\nExisting introduction.\n\n## Committing and pushing\n\nProject rule.\n\n## Releases\n\nProject release rule.\n\n## Deployment\n\nProject deploy rule.\n",
+  );
+  render(fixture("web"), target, ["--merge"]);
+  const agents = read(target, "AGENTS.md");
+  assert(!agents.includes("## Commits and pushes"), "alias duplicate: commits");
+  assert(!agents.includes("## Versioning and releases"), "alias duplicate: releases");
+  assert(!agents.includes("## Deploy\n"), "alias duplicate: deploy");
+  assert(agents.includes("Project release rule."), "existing content lost");
+});
+
 // --- version sources -------------------------------------------------------
 
 test("version file: render, verify and bump", () => {

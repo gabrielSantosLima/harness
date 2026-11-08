@@ -1,7 +1,7 @@
 {
   "harness": {
     "version": 2,
-    "commit": "343b79445c9f33f3b48adc5c8f6cd345fef86e57"
+    "commit": "ac24adce7455d5e7d5d192aef36f77e97581f54e"
   },
   "project": {
     "name": "Harness",
@@ -18,7 +18,8 @@
   },
   "quality": {
     "checks": [
-      "node tests/run.mjs"
+      "node tests/run.mjs",
+      "node tests/pilot.mjs"
     ],
     "ciDepth": "ci",
     "os": [
