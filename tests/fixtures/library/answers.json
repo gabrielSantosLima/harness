@@ -1,0 +1,36 @@
+{
+  "harness": { "version": 2, "commit": "fixture" },
+  "project": {
+    "name": "Library Fixture",
+    "slug": "library-fixture",
+    "description": "A library fixture used by the harness tests.",
+    "type": "library",
+    "license": "MIT",
+    "owner": "gabrielSantosLima",
+    "repo": "gabrielSantosLima/library-fixture"
+  },
+  "git": {
+    "commitAutonomy": "commit-and-push-when-asked",
+    "defaultBranch": "main"
+  },
+  "quality": {
+    "checks": [],
+    "ciDepth": "release-only",
+    "os": ["ubuntu-latest"]
+  },
+  "version": { "source": "tags" },
+  "release": {
+    "trigger": "workflow_dispatch",
+    "notesLanguage": "en",
+    "sections": ["features", "fixes", "chores", "other", "known-issues"],
+    "attachArtifacts": false
+  },
+  "deploy": { "target": "none" },
+  "skills": ["commit-and-push", "add-skill"],
+  "hygiene": {
+    "pullRequestTemplate": true,
+    "codeowners": true,
+    "codeownersOwner": "@gabrielSantosLima"
+  },
+  "ignore": ["PLAN.md", ".env"]
+}

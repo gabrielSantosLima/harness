@@ -1,0 +1,40 @@
+{
+  "harness": { "version": 2, "commit": "fixture" },
+  "project": {
+    "name": "Data Fixture",
+    "slug": "data-fixture",
+    "description": "A data fixture used by the harness tests.",
+    "type": "data",
+    "license": "MIT",
+    "owner": "gabrielSantosLima",
+    "repo": "gabrielSantosLima/data-fixture"
+  },
+  "git": {
+    "commitAutonomy": "commit-and-push-when-asked",
+    "defaultBranch": "main"
+  },
+  "quality": {
+    "checks": ["python etl/validar.py"],
+    "ciDepth": "ci",
+    "os": ["ubuntu-latest"]
+  },
+  "version": { "source": "tags" },
+  "release": {
+    "trigger": "workflow_dispatch",
+    "notesLanguage": "en",
+    "sections": ["features", "fixes", "chores", "other", "known-issues"],
+    "attachArtifacts": false
+  },
+  "deploy": {
+    "target": "github-pages",
+    "trigger": "on-push",
+    "artifact": "."
+  },
+  "skills": ["commit-and-push", "release-summary"],
+  "hygiene": {
+    "pullRequestTemplate": true,
+    "codeowners": true,
+    "codeownersOwner": "@gabrielSantosLima"
+  },
+  "ignore": ["PLAN.md", ".env", "assets/.gitkeep"]
+}

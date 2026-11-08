@@ -1,0 +1,44 @@
+{
+  "harness": { "version": 2, "commit": "fixture" },
+  "project": {
+    "name": "Web Fixture",
+    "slug": "web-fixture",
+    "description": "A web fixture used by the harness tests.",
+    "type": "web",
+    "license": "MIT",
+    "owner": "gabrielSantosLima",
+    "repo": "gabrielSantosLima/web-fixture"
+  },
+  "git": {
+    "commitAutonomy": "commit-and-push-when-asked",
+    "defaultBranch": "main"
+  },
+  "quality": {
+    "checks": ["npm run lint", "npm test"],
+    "ciDepth": "full",
+    "os": ["ubuntu-latest"]
+  },
+  "build": {
+    "command": "npm run build",
+    "artifacts": ["dist"]
+  },
+  "version": { "source": "tags" },
+  "release": {
+    "trigger": "workflow_dispatch",
+    "notesLanguage": "en",
+    "sections": ["features", "fixes", "chores", "other", "known-issues"],
+    "attachArtifacts": true
+  },
+  "deploy": {
+    "target": "github-pages",
+    "trigger": "on-release",
+    "artifact": "dist"
+  },
+  "skills": ["commit-and-push", "release-summary", "release-cut", "add-skill"],
+  "hygiene": {
+    "pullRequestTemplate": true,
+    "codeowners": true,
+    "codeownersOwner": "@gabrielSantosLima"
+  },
+  "ignore": ["PLAN.md", "NOTES.md", ".env", "dist/", "node_modules/"]
+}

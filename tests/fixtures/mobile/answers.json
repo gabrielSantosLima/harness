@@ -1,0 +1,36 @@
+{
+  "harness": { "version": 2, "commit": "fixture" },
+  "project": {
+    "name": "Mobile Fixture",
+    "slug": "mobile-fixture",
+    "description": "A mobile fixture used by the harness tests.",
+    "type": "mobile",
+    "license": "MIT",
+    "owner": "gabrielSantosLima",
+    "repo": "gabrielSantosLima/mobile-fixture"
+  },
+  "git": {
+    "commitAutonomy": "commit-only-when-asked",
+    "defaultBranch": "main"
+  },
+  "quality": {
+    "checks": ["npm run lint"],
+    "ciDepth": "ci",
+    "os": ["ubuntu-latest"]
+  },
+  "version": { "source": "tags" },
+  "release": {
+    "trigger": "workflow_dispatch",
+    "notesLanguage": "pt-BR",
+    "sections": ["features", "fixes", "chores", "other", "known-issues"],
+    "attachArtifacts": false
+  },
+  "deploy": { "target": "none" },
+  "skills": ["commit-and-push", "release-summary"],
+  "hygiene": {
+    "pullRequestTemplate": true,
+    "codeowners": true,
+    "codeownersOwner": "@gabrielSantosLima"
+  },
+  "ignore": ["PLAN.md", ".env"]
+}
