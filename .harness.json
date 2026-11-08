@@ -1,7 +1,7 @@
 {
   "harness": {
     "version": 2,
-    "commit": "02ccd17483aa617af84090d584c9e08c74ef9e86"
+    "commit": "c4ff3bb6dfe739c704bbb3431d94c3ed81f02970"
   },
   "project": {
     "name": "Harness",
@@ -53,6 +53,7 @@
     "release-summary",
     "release-cut",
     "github-pages",
+    "readme",
     "add-skill"
   ],
   "hygiene": {

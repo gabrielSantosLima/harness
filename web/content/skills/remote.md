@@ -74,6 +74,7 @@ Task: publish the existing static site in docs/ to GitHub Pages.
 | [`release-summary`](release-summary.md) | Write a user-facing release summary |
 | [`release-cut`](release-cut.md) | Cut and verify a release |
 | [`github-pages`](github-pages.md) | Publish a static site or docs |
+| [`readme`](readme.md) | Create, standardize or translate a README |
 | [`add-skill`](add-skill.md) | Create a skill or a proposal |
 
 `project-setup` is different by design: it configures the repository. Use the

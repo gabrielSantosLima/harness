@@ -56,6 +56,7 @@ Rules:
 | `release-summary` | Write a user-facing release summary |
 | `release-cut` | Cut and verify a release |
 | `github-pages` | Publish a static site or docs to GitHub Pages |
+| `readme` | Create, standardize or translate a README |
 | `add-skill` | Create a skill or a proposal for one |
 
 `project-setup` is the exception: it configures the project by design, so use

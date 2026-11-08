@@ -3,7 +3,7 @@
   { "slug": "getting-started", "title": "Getting started", "pages": ["requirements", "remote", "local", "first-setup", "after-setup", "updates"] },
   { "slug": "concepts", "title": "Concepts", "pages": ["modes", "project-types", "harness-json", "generated-files", "agent-skills", "decisions", "verification"] },
   { "slug": "setup", "title": "Setup guide", "pages": ["interview", "commits", "versioning", "release-notes", "ci-build", "deploy", "hygiene", "agents-md"] },
-  { "slug": "skills", "title": "Skills", "pages": ["index", "remote", "project-setup", "commit-and-push", "release-summary", "release-cut", "github-pages", "add-skill", "authoring"] },
+  { "slug": "skills", "title": "Skills", "pages": ["index", "remote", "project-setup", "commit-and-push", "release-summary", "release-cut", "github-pages", "readme", "add-skill", "authoring"] },
   { "slug": "agents", "title": "Agents", "pages": ["compatibility", "claude-code", "troubleshooting"] },
   { "slug": "reference", "title": "Reference", "pages": ["render", "verify", "harness-json", "workflows", "release-template"] },
   { "slug": "operations", "title": "Operations", "pages": ["submodule", "audit", "ci-not-configured", "release-failures", "pages", "adoption"] },

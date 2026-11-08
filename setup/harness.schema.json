@@ -154,6 +154,7 @@
           "release-summary",
           "release-cut",
           "github-pages",
+          "readme",
           "add-skill"
         ]
       },

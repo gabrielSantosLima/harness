@@ -110,6 +110,7 @@ Before a task that matches a skill, read its `SKILL.md` and follow it:
 - `release-summary` - write a short user-facing summary of the latest release.
 - `release-cut` - trigger the release workflow, watch it and verify the result.
 - `github-pages` - publish a static site or generated documentation to GitHub Pages.
+- `readme` - create, standardize or translate a README.
 - `add-skill` - propose a new reusable skill and apply it in the harness repository.
 
 Never include credentials, absolute paths or project-specific details in a skill.

@@ -17,6 +17,7 @@ stored in the harness repository and exposed to projects through `.agent/`.
 | [release-summary](release-summary.md) | Write a user-facing release summary | Yes |
 | [release-cut](release-cut.md) | Trigger and verify a release | Yes |
 | [github-pages](github-pages.md) | Publish a static site or docs to Pages | Optional |
+| [readme](readme.md) | Create, standardize or translate a README | Optional |
 | [add-skill](add-skill.md) | Create a new skill | Yes |
 
 ## Run one skill without setup
