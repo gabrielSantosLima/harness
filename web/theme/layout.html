@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="{{lang}}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{title}}</title>
+  <meta name="description" content="{{description}}">
+  <link rel="canonical" href="{{docsUrl}}">
+  <meta property="og:title" content="{{title}}">
+  <meta property="og:description" content="{{description}}">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="{{root}}assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="{{root}}assets/styles.css">
+</head>
+<body data-root="{{root}}">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="topbar">
+    <button class="menu-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    <a class="brand" href="{{root}}index.html">harness</a>
+    <span class="version">{{version}}</span>
+    <div class="topbar-actions">
+      <button class="search-button" type="button" aria-label="Search documentation">Search</button>
+      <a href="{{repoUrl}}" target="_blank" rel="noopener">GitHub</a>
+      <a href="{{releasesUrl}}" target="_blank" rel="noopener">Releases</a>
+    </div>
+  </header>
+
+  <div class="shell">
+    <aside class="sidebar" aria-label="Documentation navigation">
+      {{sidebar}}
+    </aside>
+
+    <main id="main" class="content">
+      <article>
+        {{content}}
+      </article>
+      {{pager}}
+      <footer class="page-footer">
+        <a href="{{editUrl}}" target="_blank" rel="noopener">Edit this page</a>
+        <span>MIT · {{year}}</span>
+      </footer>
+    </main>
+
+    <aside class="toc-column">
+      {{toc}}
+    </aside>
+  </div>
+
+  <div class="search-modal" hidden>
+    <div class="search-panel" role="dialog" aria-modal="true" aria-label="Search">
+      <input type="search" placeholder="Search documentation…" autocomplete="off">
+      <div class="search-results"></div>
+      <button class="search-close" type="button">Close</button>
+    </div>
+  </div>
+
+  <script src="{{root}}assets/app.js"></script>
+</body>
+</html>
