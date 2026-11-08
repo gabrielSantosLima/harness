@@ -69,7 +69,17 @@ The canonical copy lives at `skills/PROMPT.md`. On PowerShell, use
 
 ## Skills in detail
 
+Every skill below starts with the prompt that runs it remotely. Use it when the
+project is not configured with the harness.
+
 ### project-setup
+
+**Configure remotely**
+
+```text
+Use the harness at https://github.com/gabrielSantosLima/harness to configure this
+repository. Read setup/PROMPT.md from that repository and follow it exactly.
+```
 
 The meta-skill. Chooses the mode, detects the repository, interviews, writes the
 answers, shows the plan, renders with `--merge` and `--submodule`, verifies and
@@ -78,11 +88,29 @@ reports. Never touches application code, never commits and never writes into
 
 ### commit-and-push
 
+**Run remotely**
+
+```text
+Use the harness at https://github.com/gabrielSantosLima/harness to run the skill
+"commit-and-push" in this repository, without configuring the project.
+
+Task: commit the current changes and push to the current branch.
+```
+
 Reads the policy, inspects the diff, runs the declared checks, stages explicit
 paths, writes a Conventional Commit and pushes only when the policy and the user
 allow. Never tags or releases.
 
 ### release-summary
+
+**Run remotely**
+
+```text
+Use the harness at https://github.com/gabrielSantosLima/harness to run the skill
+"release-summary" in this repository, without configuring the project.
+
+Task: summarize the latest release for end users.
+```
 
 Asks the language every time (Portuguese, English or Spanish), reads commits since
 the latest tag, groups them into 4–7 user-facing bullets and drops internal work.
@@ -90,11 +118,29 @@ Never invents features.
 
 ### release-cut
 
+**Run remotely**
+
+```text
+Use the harness at https://github.com/gabrielSantosLima/harness to run the skill
+"release-cut" in this repository, without configuring the project.
+
+Task: cut a new release and verify the tag, notes and assets.
+```
+
 Asks for the bump, preid or explicit version and a summary. Dispatches the release
 workflow, watches it, then verifies tag, notes, prerelease flag and assets. On
 failure, reports and stops; never rewrites a tag.
 
 ### github-pages
+
+**Run remotely**
+
+```text
+Use the harness at https://github.com/gabrielSantosLima/harness to run the skill
+"github-pages" in this repository, without configuring the project.
+
+Task: publish the site in this repository to GitHub Pages.
+```
 
 Asks what to publish: an existing static site, a static folder, a build output or
 generated documentation. Creates `pages.yml`, checks the base path and the
@@ -103,11 +149,29 @@ GitHub Actions.
 
 ### readme
 
+**Run remotely**
+
+```text
+Use the harness at https://github.com/gabrielSantosLima/harness to run the skill
+"readme" in this repository, without configuring the project.
+
+Task: standardize the README using the harness template.
+```
+
 Asks for languages, logo, badges and sections, resolves `owner/repo` from the
 remote and writes `README.md` plus translations. Uses a centered header, badges
 and the language selector. Preserves existing content and never invents features.
 
 ### add-skill
+
+**Run remotely**
+
+```text
+Use the harness at https://github.com/gabrielSantosLima/harness to run the skill
+"add-skill" in this repository, without configuring the project.
+
+Task: create a new skill from this workflow.
+```
 
 Creates a skill in the harness or a proposal in a project. Enforces naming,
 frontmatter, agent-agnostic wording, boundaries and registration.
