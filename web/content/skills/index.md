@@ -16,7 +16,13 @@ stored in the harness repository and exposed to projects through `.agent/`.
 | [commit-and-push](commit-and-push.md) | Commit and push safely | Yes |
 | [release-summary](release-summary.md) | Write a user-facing release summary | Yes |
 | [release-cut](release-cut.md) | Trigger and verify a release | Yes |
+| [github-pages](github-pages.md) | Publish a static site or docs to Pages | Optional |
 | [add-skill](add-skill.md) | Create a new skill | Yes |
+
+## Run one skill without setup
+
+Use the [remote runner](remote.md): the agent clones the harness into a
+temporary directory, runs the skill and removes the clone.
 
 ## How they are loaded
 

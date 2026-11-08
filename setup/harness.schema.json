@@ -153,6 +153,7 @@
           "commit-and-push",
           "release-summary",
           "release-cut",
+          "github-pages",
           "add-skill"
         ]
       },

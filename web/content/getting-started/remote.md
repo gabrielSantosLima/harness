@@ -43,6 +43,12 @@ Clone the harness locally and use the
 [local quick start](local.md). The playbook is identical; only the path to the
 scripts changes.
 
+## Run only one skill
+
+If you do not want to configure the repository, use the
+[remote skill runner](../skills/remote.md) instead. It clones the harness into a
+temporary directory, runs one skill and removes the clone.
+
 ## Next
 
 - [Your first setup](first-setup.md)

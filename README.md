@@ -57,6 +57,13 @@ node scripts/verify-setup.mjs <path-to-project>
 See [`setup/PROMPT.md`](setup/PROMPT.md) for the remote bootstrap and
 [`setup/SETUP.md`](setup/SETUP.md) for the full playbook.
 
+## Run a single skill
+
+To use one skill without configuring the repository, read
+[`skills/PROMPT.md`](skills/PROMPT.md) and paste the prompt with the skill ID.
+The agent clones the harness into a temporary directory, runs the skill and
+removes the clone. Nothing is installed permanently.
+
 ## Repository layout
 
 ```text

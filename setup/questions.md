@@ -28,7 +28,7 @@ Rules for the interview:
 | 7 | Commit autonomy: commit and push when asked / commit only / strict | Commit and push when asked |
 | 8 | Existing `AGENTS.md`: merge / replace / abort | Merge missing sections |
 | 9 | Harness source for `.agent` and pinned commit | `git@github.com:gabrielSantosLima/harness.git` |
-| 10 | Skills to expose | All four default skills |
+| 10 | Skills to expose | All default skills; `github-pages` is optional |
 | 11 | README: leave untouched / add standard sections / create if missing | Ask |
 | 12 | Default branch | `main` |
 | 13 | First tag | `v0.1.0` |

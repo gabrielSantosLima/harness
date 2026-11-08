@@ -61,6 +61,13 @@ node scripts/verify-setup.mjs <ruta-del-proyecto>
 Consulta [`setup/PROMPT.md`](setup/PROMPT.md) para el bootstrap remoto y
 [`setup/SETUP.md`](setup/SETUP.md) para el flujo completo.
 
+## Ejecutar una skill aislada
+
+Para usar una skill sin configurar el repositorio, lee
+[`skills/PROMPT.md`](skills/PROMPT.md) y pega el prompt con el ID de la skill. El
+agente descarga el harness en un directorio temporal, ejecuta la skill y elimina
+el clone. Nada queda instalado permanentemente.
+
 ## Estructura del repositorio
 
 ```text

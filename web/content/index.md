@@ -29,6 +29,8 @@ files the project needs. No stacks, frameworks or architecture are assumed.
 | Understand the model before using it | [How it works](introduction/how-it-works.md) |
 | See what a setup produces | [Your first setup](getting-started/first-setup.md) |
 | Add or change a skill | [Skills](skills/index.md) |
+| Run one skill without configuring the project | [Remote skill runner](skills/remote.md) |
+| Publish a static site to Pages | [github-pages](skills/github-pages.md) |
 | Look up a flag or field | [Reference](reference/render.md) |
 
 ## Configure a project

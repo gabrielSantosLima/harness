@@ -11,8 +11,16 @@ repository, the source of truth is `skills/`.
 | `commit-and-push` | Review, stage, commit and push with Conventional Commits. | Yes |
 | `release-summary` | Write a short user-facing summary of the latest release. | Yes |
 | `release-cut` | Trigger, watch and verify a release. | Yes |
+| `github-pages` | Publish a static site or generated docs to GitHub Pages. | Optional |
 | `add-skill` | Create a new skill or a proposal for one. | Yes |
 | `project-setup` | Configure a repository from the harness. | Harness only |
+
+## Running a single skill
+
+To use one skill in a repository that is not configured with the harness, use
+[`PROMPT.md`](PROMPT.md). The agent clones the harness into a temporary
+directory, runs the skill and removes the clone. Nothing is installed
+permanently.
 
 ## Conventions
 
