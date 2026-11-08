@@ -1,6 +1,16 @@
-# Harness
+<div align="center">
+
+# harness
 
 A universal, stack-agnostic project setup harness and reusable skill library.
+
+[![CI](https://github.com/gabrielSantosLima/harness/actions/workflows/ci.yml/badge.svg)](https://github.com/gabrielSantosLima/harness/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/gabrielSantosLima/harness?label=release)](https://github.com/gabrielSantosLima/harness/releases)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+[English](README.md) | [Português (Brasil)](README.pt-BR.md) | [Español](README.es.md)
+
+</div>
 
 It configures any repository with the same foundation:
 
@@ -74,6 +84,7 @@ scripts/
   verify-setup.mjs       Verifies a generated repository
 tests/
   run.mjs                End-to-end tests
+  pilot.mjs              New/adopt/update pilots
   fixtures/              Answers for the five project types
 ```
 
