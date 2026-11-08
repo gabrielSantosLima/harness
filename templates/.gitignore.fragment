@@ -1,0 +1,18 @@
+# Local-only files (harness)
+PLAN.md
+NOTES.md
+*.local.md
+.env
+.env.*
+client_secrets.json
+secrets.json
+*.pem
+*.key
+dist/
+build/
+node_modules/
+target/
+.venv/
+__pycache__/
+.DS_Store
+Thumbs.db

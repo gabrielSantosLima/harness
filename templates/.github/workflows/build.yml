@@ -1,0 +1,68 @@
+name: Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag to build and attach the artifacts to (for example v0.1.0)"
+        required: false
+        default: ""
+        type: string
+  workflow_call:
+    inputs:
+      tag:
+        description: "Release tag to build and attach the artifacts to"
+        required: false
+        default: ""
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build
+    runs-on: {{#if osMatrix}}${{ matrix.os }}{{else}}{{osFirst}}{{/if}}
+{{#if osMatrix}}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: {{osJson}}
+{{/if}}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag || github.ref }}
+          fetch-depth: 0
+
+      - name: Build
+        run: |
+{{buildRunIndented}}
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: {{artifactName}}
+          path: |
+{{artifactsIndented}}
+          if-no-files-found: error
+
+      - name: Attach artifacts to the release
+        if: ${{ inputs.tag != '' }}
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ inputs.tag }}
+        run: |
+          set -euo pipefail
+          files=({{artifactsShell}})
+          existing=()
+          for file in "${files[@]}"; do
+            if [ -e "$file" ]; then existing+=("$file"); fi
+          done
+          if [ ${#existing[@]} -eq 0 ]; then
+            echo "No build artifacts found for $TAG" >&2
+            exit 1
+          fi
+          gh release upload "$TAG" "${existing[@]}" --clobber

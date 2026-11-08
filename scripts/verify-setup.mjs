@@ -24,7 +24,7 @@ function read(relative) {
 
 function noTokens(relative) {
   const content = read(relative);
-  const match = content.match(/\{\{[^}]+\}\}/);
+  const match = content.match(/(?<!\$)\{\{[^}]+\}\}/);
   if (match) throw new Error(`unreplaced token ${match[0]} in ${relative}`);
   return "no unreplaced tokens";
 }

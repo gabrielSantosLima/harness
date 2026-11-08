@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+    branches: [{{defaultBranch}}]
+  pull_request:
+  workflow_call:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Quality
+    runs-on: {{#if osMatrix}}${{ matrix.os }}{{else}}{{osFirst}}{{/if}}
+{{#if osMatrix}}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: {{osJson}}
+{{/if}}
+    steps:
+      - uses: actions/checkout@v4
+{{#if hasChecks}}
+      - name: Run checks
+        run: |
+{{checkRunIndented}}
+{{else}}
+      - name: Checks not configured
+        run: |
+          echo "No check commands are configured in .harness.json." >&2
+          echo "Add the project's check commands before merging." >&2
+          exit 1
+{{/if}}
+{{#if hasBuild}}
+  build:
+    name: Build
+    runs-on: {{#if osMatrix}}${{ matrix.os }}{{else}}{{osFirst}}{{/if}}
+{{#if osMatrix}}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: {{osJson}}
+{{/if}}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: |
+{{buildRunIndented}}
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: {{artifactName}}
+          path: |
+{{artifactsIndented}}
+          if-no-files-found: error
+{{/if}}

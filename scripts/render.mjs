@@ -41,34 +41,84 @@ function read(file) {
 
 // --- template engine -------------------------------------------------------
 
-function splitElse(body) {
-  const index = body.indexOf("{{else}}");
-  if (index === -1) return [body, ""];
-  return [body.slice(0, index), body.slice(index + "{{else}}".length)];
-}
-
 function getValue(context, key) {
   return key
     .split(".")
     .reduce((value, part) => (value == null ? value : value[part]), context);
 }
 
-function render(text, context) {
-  let output = text;
-  const block = /\{\{#(if|unless)\s+([\w.]+)\}\}([\s\S]*?)\{\{\/\1\}\}/;
-  let guard = 0;
-  while (block.test(output) && guard < 200) {
-    output = output.replace(block, (_, kind, key, body) => {
-      const [truthy, falsy] = splitElse(body);
-      const value = Boolean(getValue(context, key));
-      return (kind === "if" ? value : !value) ? truthy : falsy;
-    });
-    guard += 1;
+const TOKEN =
+  /(?<!\$)\{\{#(if|unless)\s+([\w.]+)\}\}|\{\{\/(if|unless)\}\}|\{\{else\}\}|\{\{\s*([\w.]+)\s*\}\}/g;
+
+function targetOf(parent) {
+  if (!parent || parent.type !== "if") return parent.children;
+  return parent.inElse ? parent.falsy : parent.truthy;
+}
+
+function parse(text) {
+  const root = { type: "root", children: [] };
+  const stack = [root];
+  let last = 0;
+
+  for (const match of text.matchAll(TOKEN)) {
+    const index = match.index;
+    if (index > last) {
+      targetOf(stack[stack.length - 1]).push({
+        type: "text",
+        value: text.slice(last, index),
+      });
+    }
+
+    if (match[1]) {
+      const node = {
+        type: "if",
+        kind: match[1],
+        key: match[2],
+        truthy: [],
+        falsy: [],
+        inElse: false,
+      };
+      targetOf(stack[stack.length - 1]).push(node);
+      stack.push(node);
+    } else if (match[3]) {
+      if (stack.length === 1) throw new Error(`Unbalanced {{/${match[3]}}}`);
+      stack.pop();
+    } else if (match[0] === "{{else}}") {
+      const node = stack[stack.length - 1];
+      if (!node || node.type !== "if") throw new Error("{{else}} outside a block");
+      node.inElse = true;
+    } else if (match[4]) {
+      targetOf(stack[stack.length - 1]).push({ type: "var", key: match[4] });
+    }
+    last = index + match[0].length;
   }
-  return output.replace(/\{\{\s*([\w.]+)\s*\}\}/g, (_, key) => {
-    const value = getValue(context, key);
-    return value === undefined || value === null ? "" : String(value);
-  });
+
+  if (last < text.length) {
+    targetOf(stack[stack.length - 1]).push({ type: "text", value: text.slice(last) });
+  }
+  if (stack.length !== 1) throw new Error("Unbalanced block in template");
+  return root;
+}
+
+function renderNodes(nodes, context, output) {
+  for (const node of nodes) {
+    if (node.type === "text") {
+      output.push(node.value);
+    } else if (node.type === "var") {
+      const value = getValue(context, node.key);
+      output.push(value === undefined || value === null ? "" : String(value));
+    } else {
+      const value = Boolean(getValue(context, node.key));
+      const condition = node.kind === "if" ? value : !value;
+      renderNodes(condition ? node.truthy : node.falsy, context, output);
+    }
+  }
+  return output;
+}
+
+function render(text, context) {
+  const output = renderNodes(parse(text).children, context, []).join("");
+  return output.replace(/\n{3,}/g, "\n\n");
 }
 
 function section(name, context) {
@@ -181,8 +231,13 @@ function buildContext(answers, options) {
     hasBuild,
     releaseOnly: ciDepth === "release-only",
     osList: osList.join(", "),
+    osFirst: osList[0],
     osJson: JSON.stringify(osList),
     osMatrix: osList.length > 1,
+    artifactName: osList.length > 1 ? "build-output-${{ matrix.os }}" : "build-output",
+    artifactsIndented: (build.artifacts ?? [])
+      .map((item) => `            ${item}`)
+      .join("\n"),
     buildCommand: build.command ?? "",
     buildRunIndented: (build.command ?? "")
       .split("\n")
