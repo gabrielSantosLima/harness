@@ -25,13 +25,13 @@ files the project needs. No stacks, frameworks or architecture are assumed.
 
 | If you want to… | Read |
 | --- | --- |
-| Configure a repository in one prompt | [Remote quick start](getting-started/remote.md) |
-| Understand the model before using it | [How it works](introduction/how-it-works.md) |
-| See what a setup produces | [Your first setup](getting-started/first-setup.md) |
-| Add or change a skill | [Skills](skills/index.md) |
-| Run one skill without configuring the project | [Remote skill runner](skills/remote.md) |
-| Publish a static site to Pages | [github-pages](skills/github-pages.md) |
-| Look up a flag or field | [Reference](reference/render.md) |
+| Configure a repository | [Getting started](start/getting-started.md) |
+| Understand the model | [How it works](start/how-it-works.md) |
+| Choose options such as CI depth or versioning | [Configuration](configure/configuration.md) |
+| Add CI, build or deploy | [CI, build and deploy](configure/ci-build-deploy.md) |
+| Run or write a skill | [Skills](skills/skills.md) |
+| Look up a flag, field or workflow | [Reference](reference/reference.md) |
+| Operate or contribute | [Operations](maintain/operations.md) and [Contributing](maintain/contributing.md) |
 
 ## Configure a project
 
@@ -46,25 +46,28 @@ The agent fetches the public harness into a temporary directory, runs the
 interview, renders the files, verifies the result and removes the clone. Nothing
 is committed, pushed or tagged.
 
+To run a single skill without configuring the repository, use the
+[remote skill runner](skills/skills.md#run-a-skill-remotely).
+
 ## What it produces
 
-- a single `AGENTS.md` with the project commands, language rules, commit policy,
-  release policy, CI/build contract, skill access and safety rules;
+- a single `AGENTS.md` with commands, language rules, commit policy, release
+  policy, CI/build contract, skill access and safety rules;
 - Conventional Commits and a safe staging policy;
 - Semantic Versioning, a manual `Release` workflow and generated release notes;
 - CI, build and deploy workflows chosen per project;
-- `.agent/`, a pinned submodule that exposes the skill library to any agent;
-- `.harness.json`, the committed setup state used for updates and drift audits.
+- `.agent/`, a pinned submodule that exposes the skill library;
+- `.harness.json`, the committed setup state used for updates and audits.
 
 ## Principles
 
-- **Universal**: the same rules for every project, independent of language or
-  tooling.
+- **Universal**: the same rules for every project, independent of tooling.
 - **Deterministic**: templates and a renderer, not free-form generation.
-- **Agent-agnostic**: `AGENTS.md` plus files under `.agent/skills`, readable by
-  any agent that can open a file.
+- **Agent-agnostic**: `AGENTS.md` plus files under `.agent/skills`.
 - **Safe**: never commits, pushes, tags or overwrites user content on its own.
 
-The documentation is available in English only. The READMEs are also published
-in [Portuguese](https://github.com/gabrielSantosLima/harness/blob/main/README.pt-BR.md)
+## Languages
+
+The documentation is English only. The READMEs are also published in
+[Portuguese](https://github.com/gabrielSantosLima/harness/blob/main/README.pt-BR.md)
 and [Spanish](https://github.com/gabrielSantosLima/harness/blob/main/README.es.md).
