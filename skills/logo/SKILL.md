@@ -42,10 +42,10 @@ Use the starters in `references/concepts.md`. Ask the user to pick one or two,
 combine them, or say "surprise me". Do not start the five versions until the
 direction is clear.
 
-## 3. Present five versions
+## 3. Present five versions in an HTML preview
 
-Always present exactly **five labeled versions** before creating files:
-`V1` to `V5`.
+Always present exactly **five labeled versions** before writing any final SVG
+asset: `V1` to `V5`.
 
 Each version must be genuinely different, not a color swap. Cover at least:
 
@@ -67,15 +67,40 @@ For each version, include:
 | Small size | How it reads at 16–32 px |
 | Risk | What could go wrong |
 
-Present them as a compact comparison table or a short list. Then ask:
+### Build `logo-preview.html`
+
+Write a single, self-contained `logo-preview.html` in the working directory and
+open it in the browser. It is the deliverable that presents the versions; do not
+ask the user to read a bare table.
+
+The preview must:
+
+- show the five versions as labeled cards (`V1`–`V5`) with an inline SVG sketch
+  for each one, clearly marked "concept sketch, not final artwork";
+- show each mark on a light and a dark background;
+- show a size strip at 16, 24, 32, 64 and 200 px, using CSS sizes on the same
+  inline SVG;
+- show the palette as hex swatches and the comparison fields (concept, geometry,
+  type, risk);
+- include the compact comparison table for quick scanning;
+- be responsive, readable, and free of external fonts, scripts, images or CDNs;
+- carry no project secrets, absolute paths or analytics.
+
+Sketching the concepts inside the preview is expected. The boundaries are: the
+preview is a working artifact, not the shipped logo, and no final
+`logo.svg`/`logo-dark.svg`/`logo-mono.svg`/`favicon.svg` file is written before
+approval. Use `references/preview.md` for the structure and a copyable skeleton.
+
+After opening the preview, ask:
 
 - which version to build;
 - whether to combine elements;
 - whether to run another round.
 
-Do not write SVG until the user explicitly picks a version. If the user insists
-on skipping the comparison, present five one-line versions and ask for a choice;
-never skip the step silently.
+If the browser cannot be opened, print the absolute path and ask the user to open
+`logo-preview.html`. If the user insists on skipping the comparison, still
+produce the five-version preview and ask for a choice; never skip the step
+silently.
 
 ## 4. Build the SVG system
 
@@ -88,6 +113,10 @@ After approval, create:
 | `logo-mono.svg` | Single color, `currentColor` |
 | `favicon.svg` | Square tile for 16–64 px |
 | `logo-wordmark.svg` | Optional horizontal lockup |
+
+`logo-preview.html` is a working artifact. Keep it if the user wants a record of
+the exploration, and offer to refresh it with the approved assets; remove it when
+the user does not want it committed.
 
 Rules:
 
@@ -139,4 +168,5 @@ detail. A logo is not an illustration.
 ## References
 
 - `references/concepts.md` — concept starters and when to use each.
+- `references/preview.md` — structure and skeleton for `logo-preview.html`.
 - `references/svg-checklist.md` — technical checklist and snippets.

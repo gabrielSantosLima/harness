@@ -18,7 +18,7 @@ in the harness repository and are exposed to projects through `.agent/`.
 | `release-cut` | Trigger and verify a release | Yes |
 | `github-pages` | Publish a static site or docs to Pages | Optional |
 | `readme` | Create, standardize or translate a README | Optional |
-| `logo` | Design a logo with five versions before SVG | Optional |
+| `logo` | Design a logo with an HTML preview of five versions | Optional |
 | `add-skill` | Create a new skill or proposal | Yes |
 
 ## How projects consume skills
@@ -176,10 +176,11 @@ any SVG.
 ```
 
 Interactive logo design. It asks about purpose, audience, tone and constraints;
-offers 6–8 concept directions when there is no initial idea; then presents five
-distinct versions and waits for approval before writing any SVG. After approval
-it builds the mark, dark, monochrome, favicon and optional wordmark variants and
-validates them at 16–200 px.
+offers 6–8 concept directions when there is no initial idea; then builds a
+self-contained `logo-preview.html` with five distinct versions, light and dark
+surfaces, a 16–200 px size strip and a comparison table. It waits for approval
+before writing any final SVG. After approval it builds the mark, dark, monochrome,
+favicon and optional wordmark variants and validates them at 16–200 px.
 
 ### add-skill
 

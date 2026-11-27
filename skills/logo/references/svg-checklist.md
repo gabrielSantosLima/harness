@@ -76,7 +76,7 @@ README:
 
 ## Final check
 
-- [ ] Five versions were presented and one was approved.
+- [ ] Five versions were presented in `logo-preview.html` and one was approved.
 - [ ] All required variants exist.
 - [ ] Valid XML and renders in a browser.
 - [ ] Readable at 16 px.
