@@ -14,7 +14,7 @@ four questions per round. The first question is always what the project is about
 | --- | --- |
 | 1 | Purpose, name, slug, owner/repo |
 | 2 | Project type, license, commit autonomy, existing `AGENTS.md` |
-| 3 | Skills, harness source, README |
+| 3 | Skills, skills delivery, harness source, README |
 | 4 | Checks, CI depth, OS matrix, build and artifacts |
 | 5 | Version source, release language and notes, artifacts |
 | 6 | Deploy, hygiene files, local-only ignores |
@@ -128,6 +128,21 @@ guidance.
 Claude Code and Gemini CLI prefer their own file names, so the renderer writes
 thin bridges instead of duplicating content. Existing bridge files are never
 overwritten without `--force`.
+
+## Skills delivery
+
+`AGENTS.md` is always generated. The delivery choice only changes how the skill
+library reaches `.agents/skills/`:
+
+| Mode | Result | Requirements |
+| --- | --- | --- |
+| `submodule` (default) | Pinned submodule at `.agents`, sparse checkout limited to `skills/` | Git submodule support |
+| `copy` | Snapshot in `.agents/skills/` plus `.agents/README.md` | None |
+| `none` | No skills; the Skills section is omitted | Empty skills list |
+
+Copy mode is refreshed by re-running the renderer with `--skills-mode copy`.
+Submodule mode is refreshed with `git submodule update --remote .agents` followed
+by a re-render.
 
 ## Locked decisions
 

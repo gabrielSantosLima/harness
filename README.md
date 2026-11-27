@@ -54,10 +54,14 @@ node scripts/render.mjs \
   --answers <answers.json> \
   --target <path-to-project> \
   --merge \
+  --skills-mode submodule \
   --submodule https://github.com/gabrielSantosLima/harness.git \
   --commit "$(git rev-parse HEAD)"
 node scripts/verify-setup.mjs <path-to-project>
 ```
+
+Use `--skills-mode copy` instead of `--submodule` when the target cannot use a
+submodule. The interview asks which mode to use.
 
 See [`setup/PROMPT.md`](setup/PROMPT.md) for the remote bootstrap and
 [`setup/SETUP.md`](setup/SETUP.md) for the full playbook.

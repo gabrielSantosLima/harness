@@ -35,6 +35,11 @@
     "artifact": "dist"
   },
   "skills": ["commit-and-push", "release-summary", "release-cut", "add-skill"],
+  "skillsSource": {
+    "mode": "submodule",
+    "path": ".agents",
+    "url": "https://github.com/gabrielSantosLima/harness.git"
+  },
   "hygiene": {
     "pullRequestTemplate": true,
     "codeowners": true,

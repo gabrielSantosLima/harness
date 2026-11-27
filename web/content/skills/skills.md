@@ -34,6 +34,10 @@ that can read files.
 bridges that import it, so Claude Code and Gemini CLI load the same rules without
 a second copy.
 
+The library reaches `.agents/` as a pinned submodule or as a copy, chosen in the
+interview. Both modes produce the same paths, so the agent instructions do not
+change.
+
 `.agents/` is read-only. Changes belong in the harness repository; projects write
 proposals to `docs/skill-proposals/<id>.md`.
 

@@ -35,35 +35,50 @@ Rules for the interview:
 | # | Question | Default |
 | --- | --- | --- |
 | 9 | Skills to expose | All default skills; `github-pages`, `readme` and `logo` are optional |
-| 10 | Harness source for `.agents` and pinned commit | `git@github.com:gabrielSantosLima/harness.git` |
-| 11 | README: leave untouched / add standard sections / create if missing | Ask |
+| 10 | Skills delivery: git submodule at `.agents/` / copy the selected skills into `.agents/` / none | Submodule |
+| 11 | Harness source URL and pinned commit (only for submodule delivery) | `git@github.com:gabrielSantosLima/harness.git` |
+| 12 | README: leave untouched / add standard sections / create if missing | Ask |
 
 ## Round 4 — Quality and CI/build
 
 | # | Question | Default |
 | --- | --- | --- |
-| 12 | Check commands (format, lint, typecheck, tests, validation) | Empty, free text |
-| 13 | CI depth: `full` (CI + build), `ci` (checks only), `release-only` | Ask |
-| 14 | CI operating systems | `ubuntu-latest` |
-| 15 | Build command and artifact paths (only when `full`) | Ask |
+| 13 | Check commands (format, lint, typecheck, tests, validation) | Empty, free text |
+| 14 | CI depth: `full` (CI + build), `ci` (checks only), `release-only` | Ask |
+| 15 | CI operating systems | `ubuntu-latest` |
+| 16 | Build command and artifact paths (only when `full`) | Ask |
 
 ## Round 5 — Versioning and release
 
 | # | Question | Default |
 | --- | --- | --- |
-| 16 | Version source: tags only / file plus field | Tags only |
-| 17 | Release-notes language | English (suggested) |
-| 18 | Release-notes sections | Features, Fixes, Refactor/Chore/Docs, Other, Known issues |
-| 19 | Attach build artifacts to the release | Yes when `full` |
+| 17 | Version source: tags only / file plus field | Tags only |
+| 18 | Release-notes language | English (suggested) |
+| 19 | Release-notes sections | Features, Fixes, Refactor/Chore/Docs, Other, Known issues |
+| 20 | Attach build artifacts to the release | Yes when `full` |
 
 ## Round 6 — Deploy and hygiene
 
 | # | Question | Default |
 | --- | --- | --- |
-| 20 | Deploy target (only for `web` and `data`): GitHub Pages / other / none | None |
-| 21 | Deploy trigger (only when a target exists): on release / on push / manual | On release |
-| 22 | Hygiene files: pull request template and `CODEOWNERS` | Yes, repository owner |
-| 23 | Local-only patterns to ignore | `PLAN.md`, notes, `.env`, secrets, build output, caches |
+| 21 | Deploy target (only for `web` and `data`): GitHub Pages / other / none | None |
+| 22 | Deploy trigger (only when a target exists): on release / on push / manual | On release |
+| 23 | Hygiene files: pull request template and `CODEOWNERS` | Yes, repository owner |
+| 24 | Local-only patterns to ignore | `PLAN.md`, notes, `.env`, secrets, build output, caches |
+
+### Skills delivery
+
+`AGENTS.md` is always generated; the choice only affects how the skill library
+reaches `.agents/skills/`.
+
+| Option | What the renderer does | Choose when |
+| --- | --- | --- |
+| `submodule` | Adds a git submodule at `.agents` pinned to a harness commit, with a sparse checkout limited to `skills/` | The target supports submodules and should track one source of truth |
+| `copy` | Copies the selected skill directories into `.agents/skills/` and writes `.agents/README.md` | Submodules are unavailable, blocked or unwanted |
+| `none` | Installs no skills and omits the Skills section | The project does not want the library |
+
+`copy` is a snapshot: the update flow re-copies it. `none` requires an empty
+skills list.
 
 ## Detection sources
 

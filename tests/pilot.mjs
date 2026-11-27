@@ -159,7 +159,25 @@ test("new repository: render, submodule, sparse checkout, verify", () => {
   assert(commitsAfter === commitsBefore, "the pilot must not create commits");
 });
 
-// --- pilot 2: adopt an existing repository --------------------------------
+// --- pilot 2: copy delivery -----------------------------------------------
+
+test("copy delivery: skills are copied and no submodule is added", () => {
+  const repo = newRepo("copy");
+  writeFileSync(join(repo, "check.mjs"), "process.exit(0);\n");
+  commitAll(repo, "chore: initial commit");
+
+  const answers = writeAnswers(join(TMP, "copy-answers.json"));
+  render(answers, repo, ["--skills-mode", "copy"]);
+
+  assert(existsSync(join(repo, ".agents/skills/commit-and-push/SKILL.md")), "skill missing");
+  assert(existsSync(join(repo, ".agents/README.md")), "copy marker missing");
+  assert(!existsSync(join(repo, ".gitmodules")), "copy mode must not add a submodule");
+
+  const result = verify(repo);
+  assert(result.status === 0, result.stdout || result.stderr);
+});
+
+// --- pilot 3: adopt an existing repository --------------------------------
 
 test("existing repository: preserve AGENTS.md and adopt", () => {
   const repo = newRepo("adopt");
@@ -191,7 +209,7 @@ test("existing repository: preserve AGENTS.md and adopt", () => {
   assert(result.status === 0, result.stdout || result.stderr);
 });
 
-// --- pilot 3: update is idempotent ---------------------------------------
+// --- pilot 4: update is idempotent ---------------------------------------
 
 test("update: re-render is idempotent and never commits", () => {
   const repo = join(TMP, "new");

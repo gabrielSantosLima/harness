@@ -16,15 +16,18 @@ node tests/pilot.mjs
 | Pilot | Scenario | Result |
 | --- | --- | --- |
 | 1 | Brand-new repository, `--submodule` with a local harness path, sparse checkout | Passed |
-| 2 | Existing repository with `AGENTS.md`, `package.json` and a custom section, `--merge` | Passed |
-| 3 | Re-render (update) of pilot 1 | Passed, idempotent, no commits |
+| 2 | Copy delivery, no submodule, `.agents/README.md` marker | Passed |
+| 3 | Existing repository with `AGENTS.md`, `package.json` and a custom section, `--merge` | Passed |
+| 4 | Re-render (update) of pilot 1 | Passed, idempotent, no commits |
 
 What the pilots assert:
 
 - `.agents/skills/<id>/SKILL.md` exists and `.agents/templates` is hidden by the
   sparse checkout;
 - `CLAUDE.md` and `GEMINI.md` exist and import `AGENTS.md`;
-- `.harness.json` records the pinned harness commit;
+- copy delivery writes `.agents/skills/<id>/SKILL.md` and `.agents/README.md`
+  without `.gitmodules`;
+- `.harness.json` records the pinned harness commit and the delivery mode;
 - `verify-setup` passes with 14/14 checks;
 - the pilot creates no commit, push or tag;
 - an existing `AGENTS.md` keeps its introduction and custom sections, and gains

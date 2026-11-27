@@ -57,10 +57,14 @@ node scripts/render.mjs \
   --answers <answers.json> \
   --target <caminho-do-projeto> \
   --merge \
+  --skills-mode submodule \
   --submodule https://github.com/gabrielSantosLima/harness.git \
   --commit "$(git rev-parse HEAD)"
 node scripts/verify-setup.mjs <caminho-do-projeto>
 ```
+
+Use `--skills-mode copy` em vez de `--submodule` quando o destino não puder usar
+submodule. A entrevista pergunta qual modo usar.
 
 Veja [`setup/PROMPT.md`](setup/PROMPT.md) para o bootstrap remoto e
 [`setup/SETUP.md`](setup/SETUP.md) para o fluxo completo.

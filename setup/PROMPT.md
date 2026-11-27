@@ -66,18 +66,31 @@ Step 4. Render.
     --merge \
     --dry-run
 
-  Then for real:
+  Then for real, with the delivery mode from the answers:
+
+  Submodule:
 
   node "$HARNESS_DIR/scripts/render.mjs" \
     --answers <answers.json> \
     --target . \
     --merge \
+    --skills-mode submodule \
     --submodule https://github.com/gabrielSantosLima/harness.git \
     --commit "$(git -C "$HARNESS_DIR" rev-parse HEAD)"
 
-  Use --merge so an existing AGENTS.md keeps its content and only missing
-  sections are appended. Never use --force on AGENTS.md, the README or
-  application files without explicit approval.
+  Copy:
+
+  node "$HARNESS_DIR/scripts/render.mjs" \
+    --answers <answers.json> \
+    --target . \
+    --merge \
+    --skills-mode copy \
+    --commit "$(git -C "$HARNESS_DIR" rev-parse HEAD)"
+
+  Use `--skills-mode none` only when the skills list is empty. Use --merge so an
+  existing AGENTS.md keeps its content and only missing sections are appended.
+  Never use --force on AGENTS.md, the README or application files without
+  explicit approval.
 
 Step 5. Verify until green.
 
@@ -104,8 +117,9 @@ Rules:
 
 - The prompt works with any agent that can run shell commands and read files.
 - The harness clone is temporary and lives outside the target repository.
-- `.agents` is added as a submodule pinned to the same commit recorded in
-  `.harness.json` when that commit is reachable.
+- In submodule mode, `.agents` is a submodule pinned to the same commit recorded
+  in `.harness.json` when that commit is reachable. In copy mode, `.agents`
+  contains the selected skills and a short `README.md` marker.
 - The canonical playbook is `setup/SETUP.md`; this file only bootstraps it.
 
 ## Command reference
@@ -114,6 +128,7 @@ Rules:
 | --- | --- |
 | Fetch the harness | `git clone --depth 1 https://github.com/gabrielSantosLima/harness.git "$HARNESS_DIR"` |
 | Dry run | `node "$HARNESS_DIR/scripts/render.mjs" --answers <answers> --target . --merge --dry-run` |
-| Render | `node "$HARNESS_DIR/scripts/render.mjs" --answers <answers> --target . --merge --submodule https://github.com/gabrielSantosLima/harness.git --commit "$(git -C "$HARNESS_DIR" rev-parse HEAD)"` |
+| Render (submodule) | `node "$HARNESS_DIR/scripts/render.mjs" --answers <answers> --target . --merge --skills-mode submodule --submodule https://github.com/gabrielSantosLima/harness.git --commit "$(git -C "$HARNESS_DIR" rev-parse HEAD)"` |
+| Render (copy) | `node "$HARNESS_DIR/scripts/render.mjs" --answers <answers> --target . --merge --skills-mode copy --commit "$(git -C "$HARNESS_DIR" rev-parse HEAD)"` |
 | Verify | `node "$HARNESS_DIR/scripts/verify-setup.mjs" .` |
 | Raw prompt URL | `https://raw.githubusercontent.com/gabrielSantosLima/harness/main/setup/PROMPT.md` |

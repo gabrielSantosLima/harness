@@ -70,20 +70,24 @@ Dry run first:
 node scripts/render.mjs --answers <answers.json> --target <target> --merge --dry-run
 ```
 
-Then:
+Then, with the delivery mode from the answers:
 
 ```bash
-node scripts/render.mjs \
-  --answers <answers.json> \
-  --target <target> \
-  --merge \
+# submodule
+node scripts/render.mjs --answers <answers.json> --target <target> --merge \
+  --skills-mode submodule \
   --submodule git@github.com:gabrielSantosLima/harness.git \
+  --commit "$(git rev-parse HEAD)"
+
+# copy
+node scripts/render.mjs --answers <answers.json> --target <target> --merge \
+  --skills-mode copy \
   --commit "$(git rev-parse HEAD)"
 ```
 
-Use `--merge` for `AGENTS.md`. Never use `--force` on `AGENTS.md`, the README or
-application files without explicit approval. The renderer never commits, pushes
-or tags.
+Use `--skills-mode none` only when no skills are selected. Use `--merge` for
+`AGENTS.md`. Never use `--force` on `AGENTS.md`, the README or application files
+without explicit approval. The renderer never commits, pushes or tags.
 
 ## 6. Verify
 

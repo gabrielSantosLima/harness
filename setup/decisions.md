@@ -49,7 +49,7 @@ No command, dependency or tool is inferred from the type.
 | Agent guidelines | A single, self-contained `AGENTS.md` | Matches existing repos; no config required. |
 | Instruction bridges | Generate `CLAUDE.md` and `GEMINI.md` that import `AGENTS.md` | One source, native loading for Claude Code and Gemini CLI. |
 | Skills layout | `.agents/skills/<id>/SKILL.md` | Matches the Agent Skills open standard and is discovered by Codex, Cline, Gemini CLI, OpenCode, Cursor and Copilot. |
-| Skills delivery | Git submodule at `.agents/` by default, or a copy; sparse checkout limited to `skills/` | One pinned source of truth, or no submodule requirement. |
+| Skills delivery | Ask per project: git submodule at `.agents/` (default), copy, or none; sparse checkout limited to `skills/` | Submodules are not always available or wanted. |
 | Skill access | `AGENTS.md` instructs the agent to read `.agents/skills/<id>/SKILL.md` | Works for any agent that can read files, including Claude Code. |
 | Default skills | `commit-and-push`, `release-summary`, `release-cut`, `add-skill` | Covers the recurring workflows. |
 | Commit autonomy | Commit and push when asked | Explicit, never automatic. |

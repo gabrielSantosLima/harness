@@ -79,6 +79,7 @@ A complete web project example:
 | Release notes | English |
 | Deploy | GitHub Pages, on release |
 | Skills | All defaults |
+| Skills delivery | Submodule |
 
 Generated files:
 

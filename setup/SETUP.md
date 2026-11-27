@@ -93,14 +93,39 @@ node scripts/render.mjs \
   --dry-run
 ```
 
-Then render for real, adding the submodule when `.agents` is missing:
+Then render for real, using the delivery mode recorded in the answers.
+
+Submodule delivery:
 
 ```bash
 node scripts/render.mjs \
   --answers <answers.json> \
   --target <target> \
   --merge \
+  --skills-mode submodule \
   --submodule git@github.com:gabrielSantosLima/harness.git \
+  --commit "$(git rev-parse HEAD)"
+```
+
+Copy delivery:
+
+```bash
+node scripts/render.mjs \
+  --answers <answers.json> \
+  --target <target> \
+  --merge \
+  --skills-mode copy \
+  --commit "$(git rev-parse HEAD)"
+```
+
+No skills:
+
+```bash
+node scripts/render.mjs \
+  --answers <answers.json> \
+  --target <target> \
+  --merge \
+  --skills-mode none \
   --commit "$(git rev-parse HEAD)"
 ```
 
@@ -111,7 +136,10 @@ Flags:
 - `--force`: overwrite generated files. Never use it on `AGENTS.md`, README or
   application files without explicit approval.
 - `--dry-run`: print the plan without writing.
-- `--submodule <url>`: add `.agents` and restrict it to `skills/`.
+- `--skills-mode <submodule|copy|none>`: how the selected skills reach
+  `.agents/skills/`; defaults to the answers or `submodule`.
+- `--skills-path <dir>`: skill root; `.agents` by default.
+- `--submodule <url>`: add the submodule at the skills path (implies `submodule`).
 - `--commit <hash>`: record the harness commit in `.harness.json`.
 
 The renderer never commits, pushes or tags.
@@ -121,6 +149,8 @@ The renderer never commits, pushes or tags.
 - Target is not a git repository: initialize it first, or add the submodule
   manually later.
 - URL not reachable: use the HTTPS URL, or ask the user for credentials.
+- Submodules blocked or unwanted: switch the answer to copy delivery and render
+  with `--skills-mode copy`.
 - `.agents` already exists: keep it; update it with
   `git -C <target> submodule update --remote .agents`.
 
@@ -148,9 +178,11 @@ Manual steps to name explicitly when they apply:
 - Configure branch protection to require CI.
 - Run the first release:
   `gh workflow run release.yml -f bump=minor -f summary="Initial release"`.
-- Initialize submodules after cloning:
+- Initialize submodules after cloning (submodule delivery only):
   `git clone --recurse-submodules <repo>` or
   `git submodule update --init --recursive`.
+- Refresh copied skills after a harness update (copy delivery only):
+  `node scripts/render.mjs --answers .harness.json --target . --merge --skills-mode copy`.
 - For `release-only`, state clearly that quality gates are not enforced.
 
 Do not commit, push or tag during setup. The user decides when to do that.

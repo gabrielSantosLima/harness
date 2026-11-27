@@ -599,6 +599,13 @@ function addSubmodule(root, url, path, options) {
 
 function copySkills(root, context, options) {
   const destination = join(root, context.skillsPath);
+  const gitmodules = join(root, ".gitmodules");
+  if (
+    existsSync(gitmodules) &&
+    read(gitmodules).includes(`path = ${context.skillsPath}`)
+  ) {
+    return `copy skipped (${context.skillsPath} is a submodule; remove it first)`;
+  }
   if (options.dryRun) {
     return `would copy ${context.skills.length} skills to ${context.skillsRoot}/`;
   }

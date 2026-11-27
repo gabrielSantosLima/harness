@@ -316,6 +316,46 @@ test("dry run: writes nothing", () => {
   expectFile(target, ".harness.json", false);
 });
 
+test("skills copy: renders and verifies without a submodule", () => {
+  const target = fresh("skills-copy");
+  render(fixture("library"), target, ["--skills-mode", "copy"]);
+  expectFile(target, ".agents/skills/commit-and-push/SKILL.md");
+  expectFile(target, ".agents/README.md");
+  expectFile(target, ".gitmodules", false);
+  const state = JSON.parse(read(target, ".harness.json"));
+  assert(state.skillsSource.mode === "copy", "mode not recorded");
+  assert(read(target, "AGENTS.md").includes("snapshot copied by the"), "copy text missing");
+  const result = verify(target);
+  assert(result.status === 0, result.stdout || result.stderr);
+});
+
+test("skills none: omits the section and records the mode", () => {
+  const target = fresh("skills-none");
+  const answers = JSON.parse(readFileSync(fixture("library"), "utf8"));
+  answers.skills = [];
+  const answersPath = join(target, "answers.json");
+  writeFileSync(answersPath, JSON.stringify(answers));
+  render(answersPath, target, ["--skills-mode", "none"]);
+  assert(!read(target, "AGENTS.md").includes("## Skills"), "skills section should be omitted");
+  const state = JSON.parse(read(target, ".harness.json"));
+  assert(state.skillsSource.mode === "none", "mode not recorded");
+  const result = verify(target);
+  assert(result.status === 0, result.stdout || result.stderr);
+});
+
+test("skills none: rejects a non-empty skill list", () => {
+  const target = fresh("skills-none-invalid");
+  const result = node("scripts/render.mjs", [
+    "--answers",
+    fixture("library"),
+    "--target",
+    target,
+    "--skills-mode",
+    "none",
+  ]);
+  assert(result.status !== 0, "render should reject skills with mode none");
+});
+
 test("render: rejects full CI without a build command", () => {
   const target = fresh("invalid");
   const answers = JSON.parse(readFileSync(fixture("web"), "utf8"));
