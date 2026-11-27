@@ -79,7 +79,7 @@ node tests/pilot.mjs --keep
 ```
 
 The pilots create real temporary git repositories and exercise new, adopt and
-update flows, including the `.agent` submodule and sparse checkout. The real
+update flows, including the `.agents` submodule and sparse checkout. The real
 adoption pilot used `gabrielSantosLima/mimose@949fa11` in a temporary clone and
 passed 13/13 checks.
 

@@ -36,8 +36,10 @@ git -C <target> log --no-merges --pretty=format:%s -n 30
 Then inspect, when present:
 
 - `AGENTS.md`
+- `CLAUDE.md`
+- `GEMINI.md`
 - `.harness.json`
-- `.agent`
+- `.agents`
 - `docs/RELEASE_TEMPLATE.md`
 - `scripts/release-notes.*`
 - `.github/workflows/*`
@@ -89,7 +91,7 @@ node scripts/render.mjs \
   --dry-run
 ```
 
-Then render for real, adding the submodule when `.agent` is missing:
+Then render for real, adding the submodule when `.agents` is missing:
 
 ```bash
 node scripts/render.mjs \
@@ -107,7 +109,7 @@ Flags:
 - `--force`: overwrite generated files. Never use it on `AGENTS.md`, README or
   application files without explicit approval.
 - `--dry-run`: print the plan without writing.
-- `--submodule <url>`: add `.agent` and restrict it to `skills/`.
+- `--submodule <url>`: add `.agents` and restrict it to `skills/`.
 - `--commit <hash>`: record the harness commit in `.harness.json`.
 
 The renderer never commits, pushes or tags.
@@ -117,8 +119,8 @@ The renderer never commits, pushes or tags.
 - Target is not a git repository: initialize it first, or add the submodule
   manually later.
 - URL not reachable: use the HTTPS URL, or ask the user for credentials.
-- `.agent` already exists: keep it; update it with
-  `git -C <target> submodule update --remote .agent`.
+- `.agents` already exists: keep it; update it with
+  `git -C <target> submodule update --remote .agents`.
 
 ## Phase 4 — Verify
 
@@ -127,7 +129,7 @@ node scripts/verify-setup.mjs <target>
 ```
 
 Every check must pass. When a check fails, fix the input and re-render; do not
-edit generated workflows by hand. `.agent` not being initialized is reported as
+edit generated workflows by hand. `.agents` not being initialized is reported as
 a note, not a failure, because verification runs from the harness tree.
 
 Also confirm the judgment items in `setup/verify.md`.

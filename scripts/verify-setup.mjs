@@ -154,15 +154,36 @@ check("AGENTS.md lists exactly the selected skills", () => {
   return `${(config.skills ?? []).length} skills`;
 });
 
-check(".agent submodule exposes the selected skills", () => {
-  if (!existsSync(join(target, ".agent"))) {
-    return "not initialized (run git submodule update --init)";
+check("skills are exposed at the declared path", () => {
+  const skills = config.skills ?? [];
+  const source = config.skillsSource ?? { mode: "submodule", path: ".agents" };
+  const mode = source.mode ?? "submodule";
+  const skillsPath = source.path ?? ".agents";
+  if (mode === "none") {
+    if (skills.length) throw new Error("skills selected but skillsSource.mode is 'none'");
+    return "disabled";
   }
-  const missing = (config.skills ?? []).filter(
-    (skill) => !existsSync(join(target, ".agent/skills", skill, "SKILL.md")),
+  const root = join(target, skillsPath);
+  if (!existsSync(root)) {
+    if (mode === "copy") {
+      throw new Error(`missing ${skillsPath}; re-run the renderer`);
+    }
+    return `not initialized (run git submodule update --init ${skillsPath})`;
+  }
+  const missing = skills.filter(
+    (skill) => !existsSync(join(root, "skills", skill, "SKILL.md")),
   );
   if (missing.length) throw new Error(`missing skills: ${missing.join(", ")}`);
-  return "submodule ok";
+  return `${mode} at ${skillsPath}`;
+});
+
+check("agent files follow coding tool conventions", () => {
+  const bridges = ["CLAUDE.md", "GEMINI.md"];
+  const missing = bridges.filter((file) => !existsSync(join(target, file)));
+  if (missing.length) throw new Error(`missing ${missing.join(", ")}`);
+  const broken = bridges.filter((file) => !read(file).includes("AGENTS.md"));
+  if (broken.length) throw new Error(`${broken.join(", ")} does not reference AGENTS.md`);
+  return "AGENTS.md plus CLAUDE.md and GEMINI.md bridges";
 });
 
 check("gitignore covers the declared local-only patterns", () => {

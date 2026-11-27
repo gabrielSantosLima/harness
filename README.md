@@ -26,7 +26,7 @@ It configures any repository with the same foundation:
 - Semantic Versioning, a manual `Release` GitHub Action and generated release
   notes;
 - CI, build and deploy workflows chosen per project;
-- `.agent/`, a pinned submodule that exposes the skill library to any agent;
+- `.agents/`, the skill library as a pinned submodule or a copy;
 - `.harness.json`, the committed setup state used for updates and drift audits.
 
 It deliberately does not cover technology stacks, frameworks, dependencies or
@@ -114,35 +114,32 @@ tests/
 The type only selects which questions are asked and which generic jobs are
 generated. No stack is inferred.
 
-## Skills
+## Agent instructions and skills
 
-The library lives in `skills/`. Generated projects reference it through the
-`.agent/` submodule with a sparse checkout limited to `skills/`, and `AGENTS.md`
-tells the agent to read `.agent/skills/<id>/SKILL.md` on demand. This works for
-any agent that can read files.
+`AGENTS.md` is the single instruction file. It works natively in Codex, Cline,
+OpenCode, Cursor and GitHub Copilot. The renderer also writes two thin bridges so
+the same content loads in tools with their own file name:
 
-In this repository, run OpenCode with the included `.opencode/opencode.json`, or
-read the skill files directly. Add a skill with
+- `CLAUDE.md` imports `AGENTS.md` and is what Claude Code reads;
+- `GEMINI.md` imports `AGENTS.md` and is what Gemini CLI reads by default.
+
+Skills live at `.agents/skills/<id>/SKILL.md`, the interoperable Agent Skills
+path. Codex, Cline, Gemini CLI, OpenCode, Cursor and Copilot discover it
+natively. Claude Code does not scan it, so `AGENTS.md` still tells the agent to
+read the matching `SKILL.md` on demand; that works for any agent that can read
+files.
+
+Generated projects reference the library through the `.agents/` submodule with a
+sparse checkout limited to `skills/`, or receive a copy when the submodule is
+not wanted. In this repository, run OpenCode with the included
+`.opencode/opencode.json`, or read the skill files directly. Add a skill with
 [`skills/add-skill/SKILL.md`](skills/add-skill/SKILL.md).
-
-### Claude Code
-
-Claude Code does not read `AGENTS.md` natively. Point it at the project rules
-once, globally, in `~/.claude/CLAUDE.md`:
-
-```markdown
-When the current repository has an AGENTS.md, read it before starting any task
-and follow it. Skills live in .agent/skills/<id>/SKILL.md; read the matching one
-on demand.
-```
-
-No per-project adapter file is generated.
 
 ## Requirements
 
 - Node.js 20 or newer (renderer, verifier and release scripts).
 - Git, and the GitHub CLI (`gh`) for releases.
-- `git` submodule support in the target repository.
+- `git` submodule support in the target repository when using submodule mode.
 
 ## Development
 

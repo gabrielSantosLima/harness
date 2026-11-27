@@ -107,12 +107,25 @@ English is suggested; Portuguese and Spanish templates ship with the harness.
 | Versioning and releases | Tags or file, workflow, tag rules |
 | CI and build | Depth, checks, artifacts |
 | Deploy | Only when configured |
-| Skills | The `.agent/skills` contract |
+| Skills | The `.agents/skills` contract and delivery mode |
 | Secrets and safety | What must never be committed |
 | Data rules | Only for `data` projects |
 
 The file is self-contained and never includes stack, architecture or dependency
 guidance.
+
+## Agent files
+
+| File | Read by | Content |
+| --- | --- | --- |
+| `AGENTS.md` | Codex, Cline, OpenCode, Cursor, Copilot | The full project contract |
+| `CLAUDE.md` | Claude Code | Imports `AGENTS.md` |
+| `GEMINI.md` | Gemini CLI | Imports `AGENTS.md` |
+| `.agents/skills/<id>/SKILL.md` | Codex, Cline, Gemini CLI, OpenCode, Cursor, Copilot | Skill library |
+
+Claude Code and Gemini CLI prefer their own file names, so the renderer writes
+thin bridges instead of duplicating content. Existing bridge files are never
+overwritten without `--force`.
 
 ## Locked decisions
 

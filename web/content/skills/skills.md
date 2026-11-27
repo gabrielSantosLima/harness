@@ -6,7 +6,7 @@ description: Catalog, remote runner, per-skill guide and authoring rules.
 # Skills
 
 A skill is a Markdown file with instructions for a recurring task. Skills live
-in the harness repository and are exposed to projects through `.agent/`.
+in the harness repository and are exposed to projects through `.agents/`.
 
 ## Catalog
 
@@ -23,11 +23,18 @@ in the harness repository and are exposed to projects through `.agent/`.
 
 ## How projects consume skills
 
-`AGENTS.md` lists the skills and says: before a task that matches a skill, read
-`.agent/skills/<id>/SKILL.md` and follow it. No agent-specific loader is
-required. Any agent that can read files can use the library.
+Skills live at `.agents/skills/<id>/SKILL.md`, the interoperable path of the
+Agent Skills standard. Codex, Cline, Gemini CLI, OpenCode, Cursor and GitHub
+Copilot discover that folder natively. Claude Code scans `.claude/skills`
+instead, so `AGENTS.md` also instructs every agent to read
+`.agents/skills/<id>/SKILL.md` on demand. That instruction works for any agent
+that can read files.
 
-`.agent/` is read-only. Changes belong in the harness repository; projects write
+`AGENTS.md` is the instruction source. `CLAUDE.md` and `GEMINI.md` are generated
+bridges that import it, so Claude Code and Gemini CLI load the same rules without
+a second copy.
+
+`.agents/` is read-only. Changes belong in the harness repository; projects write
 proposals to `docs/skill-proposals/<id>.md`.
 
 ## Run a skill remotely
@@ -51,7 +58,7 @@ Steps:
 3. Execute the skill against the current repository. Use scripts from the
    temporary clone; do not copy them into the repository.
 
-4. Keep the clone until the skill finishes. Do not add .agent, do not create
+4. Keep the clone until the skill finishes. Do not add .agents, do not create
    .harness.json, and do not install the skill permanently.
 
 5. Remove the temporary clone when done.
@@ -85,7 +92,7 @@ repository. Read setup/PROMPT.md from that repository and follow it exactly.
 The meta-skill. Chooses the mode, detects the repository, interviews, writes the
 answers, shows the plan, renders with `--merge` and `--submodule`, verifies and
 reports. Never touches application code, never commits and never writes into
-`.agent/`.
+`.agents/`.
 
 ### commit-and-push
 

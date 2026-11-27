@@ -1,7 +1,7 @@
 # Run a single skill remotely
 
 Use this when you want one skill from the harness without configuring the
-project: no `AGENTS.md`, no `.harness.json`, no `.agent` submodule.
+project: no `AGENTS.md`, no `.harness.json`, no `.agents` submodule.
 
 The agent clones the harness into a temporary directory, reads the skill, runs
 it, and removes the clone when done. The temporary clone may live anywhere
@@ -33,7 +33,7 @@ Steps:
 3. Execute the skill against the current repository. Use the skill's scripts
    from the temporary clone; do not copy them into the repository.
 
-4. Keep the temporary clone until the skill finishes. Do not add `.agent`, do
+4. Keep the temporary clone until the skill finishes. Do not add `.agents`, do
    not create `.harness.json`, and do not install the skill permanently.
 
 5. Remove the temporary clone when the skill is done.
@@ -70,4 +70,4 @@ Rules:
 - Keeping the clone until the end lets the agent read references and rerun
   scripts without fetching again.
 - For repeated use, use the project setup so the skill is available at
-  `.agent/skills/<id>/SKILL.md`.
+  `.agents/skills/<id>/SKILL.md`.

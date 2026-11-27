@@ -27,7 +27,7 @@ Rules for the interview:
 | --- | --- | --- |
 | 7 | Commit autonomy: commit and push when asked / commit only / strict | Commit and push when asked |
 | 8 | Existing `AGENTS.md`: merge / replace / abort | Merge missing sections |
-| 9 | Harness source for `.agent` and pinned commit | `git@github.com:gabrielSantosLima/harness.git` |
+| 9 | Harness source for `.agents` and pinned commit | `git@github.com:gabrielSantosLima/harness.git` |
 | 10 | Skills to expose | All default skills; `github-pages`, `readme` and `logo` are optional |
 | 11 | README: leave untouched / add standard sections / create if missing | Ask |
 | 12 | Default branch | `main` |
@@ -70,7 +70,7 @@ Rules for the interview:
 - `AGENTS.md` — existing agent rules.
 - `docs/RELEASE_TEMPLATE.md`, `scripts/release-notes.*` — existing release notes.
 - `.github/workflows/*` — existing CI, build and deploy coverage.
-- `.agent` — existing harness submodule and pinned commit.
+- `.agents` — existing harness submodule and pinned commit.
 - `.harness.json` — previous answers; in `update` mode they replace the
   interview except for questions the user explicitly wants to change.
 - `index.html` — strong signal for `web`.

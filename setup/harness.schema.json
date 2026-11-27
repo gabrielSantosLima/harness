@@ -161,6 +161,26 @@
       },
       "uniqueItems": true
     },
+    "skillsSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "How the selected skills are delivered to the project.",
+      "properties": {
+        "mode": {
+          "enum": ["submodule", "copy", "none"],
+          "default": "submodule"
+        },
+        "path": {
+          "type": "string",
+          "description": "Directory that holds skills/, .agents by default.",
+          "pattern": "^[A-Za-z0-9._/-]+$"
+        },
+        "url": {
+          "type": "string",
+          "description": "Harness repository used when mode is submodule."
+        }
+      }
+    },
     "hygiene": {
       "type": "object",
       "additionalProperties": false,

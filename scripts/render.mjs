@@ -2,7 +2,7 @@
 // Renders the harness templates into a target repository.
 // Usage: node scripts/render.mjs --answers <file> --target <dir> [--dry-run] [--force] [--merge] [--submodule <url>] [--commit <hash>]
 import { execFileSync } from "node:child_process";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync, cpSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -209,6 +209,25 @@ function buildContext(answers, options) {
   const owner = project.owner ?? (project.repo ? project.repo.split("/")[0] : "");
   const repo = project.repo ?? (owner ? `${owner}/${project.slug}` : project.slug);
 
+  const skillsSource = answers.skillsSource ?? {};
+  const skillsMode =
+    options.skillsMode ??
+    (options.submoduleUrl ? "submodule" : skillsSource.mode ?? "submodule");
+  if (!["submodule", "copy", "none"].includes(skillsMode)) {
+    throw new Error(`Unknown skills mode: ${skillsMode}`);
+  }
+  if (skillsMode === "none" && answers.skills.length) {
+    throw new Error(
+      "Skills are selected but skillsSource.mode is 'none'; disable skills or choose submodule/copy",
+    );
+  }
+  const skillsPath = (options.skillsPath ?? skillsSource.path ?? ".agents").replace(
+    /[\\/]+$/,
+    "",
+  );
+  const skillsUrl = options.submoduleUrl ?? skillsSource.url ?? null;
+  const skillsRoot = options.skillsRoot ?? `${skillsPath}/skills`;
+
   const commitAutonomyText = {
     "commit-and-push-when-asked":
       "Commit and push only when the user asks. When they do, commit the intended changes and push to the current branch.",
@@ -291,7 +310,13 @@ function buildContext(answers, options) {
     isLibrary: project.type === "library",
     isData: project.type === "data",
     skills: answers.skills,
-    skillsRoot: options.skillsRoot ?? ".agent/skills",
+    skillsMode,
+    skillsPath,
+    skillsUrl,
+    skillsRoot,
+    skillsSubmodule: skillsMode === "submodule",
+    skillsCopy: skillsMode === "copy",
+    skillsAvailable: skillsMode !== "none",
     isHarness: options.skillsRoot === "skills",
     skillBullets: answers.skills
       .map((id) => `- \`${id}\` - ${SKILL_DESCRIPTIONS[id] ?? "reusable workflow."}`)
@@ -346,6 +371,11 @@ function buildState(context) {
       artifact: context.deployArtifact,
     },
     skills: context.skills,
+    skillsSource: {
+      mode: context.skillsMode,
+      path: context.skillsPath,
+      ...(context.skillsUrl ? { url: context.skillsUrl } : {}),
+    },
     hygiene: {
       pullRequestTemplate: context.generatePr,
       codeowners: context.generateCodeowners,
@@ -365,6 +395,16 @@ function buildState(context) {
 
 // --- outputs ---------------------------------------------------------------
 
+function bridge(toolName, context) {
+  const skills = context.skillsAvailable
+    ? ` Skills live in \`${context.skillsRoot}/<id>/SKILL.md\`; read the matching one on demand.`
+    : "";
+  return render(
+    `# ${toolName}\n\n@AGENTS.md\n\nRead \`AGENTS.md\` before starting any task and follow it.${skills}\n`,
+    context,
+  );
+}
+
 function buildOutputs(context) {
   const agents = render(read(join(HARNESS_ROOT, "templates", "AGENTS.md")), {
     ...context,
@@ -372,7 +412,7 @@ function buildOutputs(context) {
     sec_commits: section("commits", context),
     sec_releases: section("releases", context),
     sec_build: section("build-ci", context),
-    sec_skills: section("skills", context),
+    sec_skills: context.skillsAvailable ? section("skills", context) : "",
     sec_safety: section("safety", context),
     sec_data: context.isData ? section("data", context) : "",
     sec_harness: context.isHarness ? section("harness", context) : "",
@@ -388,6 +428,14 @@ function buildOutputs(context) {
 
   const outputs = [
     { path: "AGENTS.md", content: agents, merge: true },
+    {
+      path: "CLAUDE.md",
+      content: bridge("Claude Code", context),
+    },
+    {
+      path: "GEMINI.md",
+      content: bridge("Gemini CLI", context),
+    },
     { path: "docs/RELEASE_TEMPLATE.md", content: releaseTemplate },
     {
       path: "scripts/release-notes.mjs",
@@ -498,7 +546,7 @@ function appendIgnore(target, lines, actions, options) {
   actions.push({ path: ".gitignore", action: current ? "appended" : "created" });
 }
 
-function addSubmodule(root, url, options) {
+function addSubmodule(root, url, path, options) {
   try {
     execFileSync("git", ["-C", root, "rev-parse", "--is-inside-work-tree"], {
       stdio: "ignore",
@@ -506,10 +554,10 @@ function addSubmodule(root, url, options) {
   } catch {
     return "submodule skipped (target is not a git repository)";
   }
-  if (existsSync(join(root, ".agent"))) {
-    return "submodule skipped (.agent already exists)";
+  if (existsSync(join(root, path))) {
+    return `submodule skipped (${path} already exists)`;
   }
-  if (options.dryRun) return `submodule would be added from ${url}`;
+  if (options.dryRun) return `submodule would be added from ${url} at ${path}`;
   try {
     execFileSync(
       "git",
@@ -523,27 +571,56 @@ function addSubmodule(root, url, options) {
         "--depth",
         "1",
         url,
-        ".agent",
+        path,
       ],
       { stdio: "ignore" },
     );
-    execFileSync("git", ["-C", join(root, ".agent"), "sparse-checkout", "set", "skills"], {
-      stdio: "ignore",
-    });
+    execFileSync(
+      "git",
+      ["-C", join(root, path), "sparse-checkout", "set", "skills"],
+      { stdio: "ignore" },
+    );
     if (options.commit) {
       try {
         execFileSync(
           "git",
-          ["-C", join(root, ".agent"), "checkout", "--quiet", options.commit],
+          ["-C", join(root, path), "checkout", "--quiet", options.commit],
           { stdio: "ignore" },
         );
       } catch {
         // The pinned commit may be unreachable in a shallow clone; HEAD stays.
       }
     }
-    return `submodule added from ${url} (sparse: skills/)`;
+    return `submodule added from ${url} at ${path} (sparse: skills/)`;
   } catch {
     return `submodule could not be added from ${url}; add it manually`;
+  }
+}
+
+function copySkills(root, context, options) {
+  const destination = join(root, context.skillsPath);
+  if (options.dryRun) {
+    return `would copy ${context.skills.length} skills to ${context.skillsRoot}/`;
+  }
+  try {
+    for (const id of context.skills) {
+      const source = join(HARNESS_ROOT, "skills", id);
+      if (!existsSync(source)) {
+        return `skills copy failed: ${id} is missing in the harness`;
+      }
+      cpSync(source, join(destination, "skills", id), {
+        recursive: true,
+        force: true,
+      });
+    }
+    mkdirSync(destination, { recursive: true });
+    writeFileSync(
+      join(destination, "README.md"),
+      `# Skills\n\nThis directory is a copy generated by the harness, not a git submodule.\nThe source of truth is the harness repository. Do not edit these files; re-run\nthe harness update to refresh the copy. The selected skills are listed in\n\`AGENTS.md\`.\n`,
+    );
+    return `copied ${context.skills.length} skills to ${context.skillsRoot}/`;
+  } catch (error) {
+    return `skills could not be copied: ${error.message}`;
   }
 }
 
@@ -554,7 +631,7 @@ function main() {
   const target = arg("--target");
   if (!answersPath || !target) {
     console.error(
-      "Usage: node scripts/render.mjs --answers <file> --target <dir> [--dry-run] [--force] [--merge] [--submodule <url>] [--commit <hash>] [--skills-root <path>]",
+      "Usage: node scripts/render.mjs --answers <file> --target <dir> [--dry-run] [--force] [--merge] [--skills-mode <submodule|copy|none>] [--skills-path <dir>] [--submodule <url>] [--commit <hash>] [--skills-root <path>]",
     );
     process.exit(1);
   }
@@ -563,6 +640,8 @@ function main() {
     dryRun: flag("--dry-run"),
     force: flag("--force"),
     merge: flag("--merge"),
+    skillsMode: arg("--skills-mode"),
+    skillsPath: arg("--skills-path"),
     submoduleUrl: arg("--submodule"),
     commit: arg("--commit"),
     skillsRoot: arg("--skills-root"),
@@ -581,16 +660,21 @@ function main() {
     appendIgnore(root, context.ignore, actions, options);
   }
 
-  const submoduleResult = options.submoduleUrl
-    ? addSubmodule(root, options.submoduleUrl, options)
-    : null;
+  let skillsResult = null;
+  if (context.skillsMode === "submodule" && context.skillsUrl) {
+    skillsResult = addSubmodule(root, context.skillsUrl, context.skillsPath, options);
+  } else if (context.skillsMode === "copy") {
+    skillsResult = copySkills(root, context, options);
+  } else if (context.skillsMode === "submodule") {
+    skillsResult = `submodule not initialized (no URL; set skillsSource.url or pass --submodule)`;
+  }
 
   console.log(`Harness render ${options.dryRun ? "(dry run)" : ""}`);
   console.log(`Target: ${root}`);
   for (const item of actions) {
     console.log(`- ${item.action.padEnd(18)} ${item.path}`);
   }
-  if (submoduleResult) console.log(`- ${submoduleResult}`);
+  if (skillsResult) console.log(`- ${skillsResult}`);
   console.log(`\n${options.dryRun ? "Would render" : "Rendered"} ${actions.length} files.`);
 }
 

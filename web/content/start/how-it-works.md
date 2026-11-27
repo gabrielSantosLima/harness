@@ -54,16 +54,18 @@ dependency.
 
 ## Generated vs owned
 
-**Generated:** `AGENTS.md`, `docs/RELEASE_TEMPLATE.md`, `scripts/release-notes.mjs`,
-version scripts, workflows, PR template, `CODEOWNERS`, `.harness.json`.
+**Generated:** `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `docs/RELEASE_TEMPLATE.md`,
+`scripts/release-notes.mjs`, version scripts, workflows, PR template,
+`CODEOWNERS`, `.harness.json`.
 
 **Owned by the project:** application code, `README.md`, existing workflows,
-existing release scripts, custom `AGENTS.md` sections, `.agent/` (read-only).
+existing release scripts, custom `AGENTS.md` sections, `.agents/` (read-only).
 
 ## Verification
 
-Thirteen checks cover the state file, `AGENTS.md`, the release template and
-engine, version tooling, workflows, commands, skills, `.gitignore` and hygiene.
+Fourteen checks cover the state file, `AGENTS.md`, the agent bridges, the release
+template and engine, version tooling, workflows, commands, skills, `.gitignore`
+and hygiene.
 
 It does not prove that checks pass, that workflows are valid YAML or that the
 project builds. Those are CI and agent responsibilities.
@@ -72,8 +74,8 @@ project builds. Those are CI and agent responsibilities.
 node scripts/verify-setup.mjs <target>
 ```
 
-`.agent` not being initialized is a note, not a failure. Existing sections such as
-`Tech stack` are reported, not rejected.
+`.agents` not being initialized is a note, not a failure. Existing sections such
+as `Tech stack` are reported, not rejected.
 
 ## Next
 

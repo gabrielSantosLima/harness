@@ -1,6 +1,6 @@
 ---
 name: Project setup
-description: Configure a repository from the harness, including agent guidelines, commit policy, versioning, release notes, CI, build, deploy, and the .agent skill reference. Use when the user asks to set up a new project, adopt or audit an existing repository, or update harness configuration.
+description: Configure a repository from the harness, including agent guidelines, commit policy, versioning, release notes, CI, build, deploy, and the .agents skill reference. Use when the user asks to set up a new project, adopt or audit an existing repository, or update harness configuration.
 ---
 
 # Project setup
@@ -42,7 +42,7 @@ git -C <target> tag --sort=-v:refname | head -n 3
 git -C <target> log --no-merges --pretty=format:%s -n 30
 ```
 
-Inspect `AGENTS.md`, `.harness.json`, `.agent`, `docs/RELEASE_TEMPLATE.md`,
+Inspect `AGENTS.md`, `.harness.json`, `.agents`, `docs/RELEASE_TEMPLATE.md`,
 `scripts/release-notes.*`, `.github/workflows/*` and `index.html`.
 
 Never infer a stack, framework, architecture, dependency or package manager.
@@ -107,6 +107,6 @@ Do not commit, push or tag. The user decides when.
 - Never modify application code.
 - Never invent answers; ask.
 - Never change the locked decisions in `setup/decisions.md` from this skill.
-- Never write into `.agent/`; it is read-only.
+- Never write into `.agents/`; it is read-only.
 - To add a skill, use the `add-skill` skill and apply it in the harness
   repository.

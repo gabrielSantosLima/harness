@@ -139,9 +139,15 @@ test("new repository: render, submodule, sparse checkout, verify", () => {
     HARNESS_HEAD,
   ]);
 
-  assert(existsSync(join(repo, ".agent/skills/commit-and-push/SKILL.md")), "skill missing");
-  assert(!existsSync(join(repo, ".agent/templates")), "sparse checkout should hide templates");
+  assert(existsSync(join(repo, ".agents/skills/commit-and-push/SKILL.md")), "skill missing");
+  assert(!existsSync(join(repo, ".agents/templates")), "sparse checkout should hide templates");
   assert(existsSync(join(repo, ".gitmodules")), ".gitmodules missing");
+  for (const bridge of ["CLAUDE.md", "GEMINI.md"]) {
+    assert(
+      readFileSync(join(repo, bridge), "utf8").includes("AGENTS.md"),
+      `${bridge} does not reference AGENTS.md`,
+    );
+  }
 
   const state = JSON.parse(readFileSync(join(repo, ".harness.json"), "utf8"));
   assert(state.harness.commit === HARNESS_HEAD, "harness commit not pinned");

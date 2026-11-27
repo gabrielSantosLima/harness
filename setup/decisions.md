@@ -47,8 +47,10 @@ No command, dependency or tool is inferred from the type.
 | Release trigger | GitHub Actions `workflow_dispatch` with `bump`, `preid`, `version`, `summary` | One path for every generated project. |
 | Version source | Tags only by default; a file plus field only when declared | Works for every project type. |
 | Agent guidelines | A single, self-contained `AGENTS.md` | Matches existing repos; no config required. |
-| Skills | Git submodule at `.agent/`, sparse checkout limited to `skills/` | One pinned source of truth, no duplication. |
-| Skill access | `AGENTS.md` instructs the agent to read `.agent/skills/<id>/SKILL.md` | Works for any agent that can read files. |
+| Instruction bridges | Generate `CLAUDE.md` and `GEMINI.md` that import `AGENTS.md` | One source, native loading for Claude Code and Gemini CLI. |
+| Skills layout | `.agents/skills/<id>/SKILL.md` | Matches the Agent Skills open standard and is discovered by Codex, Cline, Gemini CLI, OpenCode, Cursor and Copilot. |
+| Skills delivery | Git submodule at `.agents/` by default, or a copy; sparse checkout limited to `skills/` | One pinned source of truth, or no submodule requirement. |
+| Skill access | `AGENTS.md` instructs the agent to read `.agents/skills/<id>/SKILL.md` | Works for any agent that can read files, including Claude Code. |
 | Default skills | `commit-and-push`, `release-summary`, `release-cut`, `add-skill` | Covers the recurring workflows. |
 | Commit autonomy | Commit and push when asked | Explicit, never automatic. |
 | Setup state | `.harness.json` committed | Reproducible updates and drift audits. |
@@ -60,8 +62,9 @@ No command, dependency or tool is inferred from the type.
 | `.gitignore` defaults | `PLAN.md`/notes, `.env`/secrets, build output and caches | Prevents the common accidents. |
 | Harness itself | Self-hosted with its own releases | The harness follows its own contract. |
 | New repositories | `main` branch, first tag `v0.1.0` | Modern default, honest pre-1.0 start. |
-| `verify-setup` | Harness-only, never copied into projects | Keeps `.agent` limited to skills. |
-| Claude Code | Documented global `~/.claude/CLAUDE.md` pointer | No per-project adapter files. |
+| `verify-setup` | Harness-only, never copied into projects | Keeps `.agents` limited to skills. |
+| Claude Code | `CLAUDE.md` with `@AGENTS.md`, no global setup | Claude Code prefers `CLAUDE.md`; the import keeps one source. |
+| Gemini CLI | `GEMINI.md` with `@AGENTS.md`, no settings file | Gemini reads `GEMINI.md` by default; the import keeps one source. |
 
 ## Non-negotiable house rules
 
@@ -90,11 +93,16 @@ These apply to every generated project and are never asked:
 
 ## Consequences
 
-- `.agent` is read-only. A project agent that wants a new skill writes a
+- `.agents` is read-only. A project agent that wants a new skill writes a
   proposal to `docs/skill-proposals/<id>.md`; the skill is applied in the
   harness repository.
-- With a sparse checkout, `.agent` contains only `skills/`. Therefore
+- With a sparse checkout, `.agents` contains only `skills/`. In copy mode, it
+  contains the copied skill directories and a short `README.md` marker.
   `verify-setup` runs from the harness working tree during setup, update and
   audit; generated CI never runs it.
-- Claude Code does not read `AGENTS.md`. A one-time global pointer is
-  documented in the harness README; no project file is generated for it.
+- Claude Code prefers `CLAUDE.md` over `AGENTS.md`; the generated bridge imports
+  `AGENTS.md` so both stay in sync. No global pointer is required.
+- Gemini CLI reads only `GEMINI.md` by default; the generated bridge imports
+  `AGENTS.md`, so no `.gemini/settings.json` is required.
+- The remaining agents read `AGENTS.md` natively: Codex, Cline, OpenCode,
+  Cursor and GitHub Copilot.

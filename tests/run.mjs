@@ -98,6 +98,8 @@ for (const name of fixtures) {
     const result = verify(target);
     assert(result.status === 0, result.stdout || result.stderr);
     expectFile(target, "AGENTS.md");
+    expectFile(target, "CLAUDE.md");
+    expectFile(target, "GEMINI.md");
     expectFile(target, ".harness.json");
     expectFile(target, "docs/RELEASE_TEMPLATE.md");
     expectFile(target, "scripts/release-notes.mjs");

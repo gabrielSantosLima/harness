@@ -25,11 +25,12 @@ agent confirms the judgment items.
 
 - [ ] Every `run:` command in a workflow matches `.harness.json`.
 - [ ] Every script referenced by a workflow exists.
-- [ ] `AGENTS.md` lists exactly the skills present in `.agent/skills/` and
+- [ ] `AGENTS.md` lists exactly the skills present in `.agents/skills/` and
       selected in `.harness.json`.
 - [ ] The version file contains the declared field.
-- [ ] `.agent` is a submodule pinned to a harness commit and its `skills/`
-      directory contains every selected skill.
+- [ ] `.agents` delivers every selected skill: a submodule pinned to a harness
+      commit, or a copy marked by `.agents/README.md`.
+- [ ] `CLAUDE.md` and `GEMINI.md` exist and reference `AGENTS.md`.
 - [ ] No stack, framework or architecture section leaked into `AGENTS.md`.
 - [ ] `AGENTS.md` command list matches the recorded check and build commands.
 

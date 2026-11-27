@@ -5,19 +5,28 @@ description: Submodule, audits, CI fixes, release recovery, Pages and adoption.
 
 # Operations
 
-## Submodule operations
+## Skills delivery
 
-`.agent` is a pinned submodule with a sparse checkout limited to `skills/`.
+Submodule mode (default): `.agents` is a pinned submodule with a sparse checkout
+limited to `skills/`.
 
 ```bash
 git clone --recurse-submodules <repo>
 git submodule update --init --recursive
-git submodule update --remote .agent
-git -C .agent sparse-checkout set skills
+git submodule update --remote .agents
+git -C .agents sparse-checkout set skills
 ```
 
 Review `git diff --submodule` before committing an update. To pin a specific
-commit, fetch, checkout it inside `.agent`, then `git add .agent`.
+commit, fetch, checkout it inside `.agents`, then `git add .agents`.
+
+Copy mode: `.agents/skills/` is a snapshot of the harness library and
+`.agents/README.md` marks it as a copy. There is no submodule to initialize.
+Refresh it with the renderer:
+
+```bash
+node scripts/render.mjs --answers .harness.json --target . --merge --skills-mode copy
+```
 
 On Windows, enable long paths, use a real submodule (not a junction) and keep
 `* text=auto eol=lf` in `.gitattributes`.
@@ -88,14 +97,19 @@ reported, not rewritten.
 
 ## Agent troubleshooting
 
-- **Agent ignores `AGENTS.md`**: confirm it is at the repository root; Claude Code
-  needs the global pointer in `~/.claude/CLAUDE.md`.
+- **Agent ignores `AGENTS.md`**: confirm it is at the repository root. Claude Code
+  reads `CLAUDE.md`, Gemini CLI reads `GEMINI.md`; both generated bridges import
+  `AGENTS.md`.
+- **A bridge is missing or stale**: re-render. `CLAUDE.md` and `GEMINI.md` are
+  generated with `@AGENTS.md`; existing files are never overwritten without
+  `--force`.
 - **Skill not used**: confirm it is listed in `AGENTS.md` and exists in
-  `.agent/skills/<id>/SKILL.md`; mention it explicitly.
-- **`.agent` empty**: `git submodule update --init --recursive`.
-- **Skills missing after update**: `git -C .agent sparse-checkout set skills`.
-- **Agent edits `.agent`**: stop it; the submodule is read-only.
-- **Cannot clone the harness**: use a local clone and the local quick start.
+  `.agents/skills/<id>/SKILL.md`; mention it explicitly.
+- **`.agents` empty**: `git submodule update --init --recursive`.
+- **Skills missing after update**: `git -C .agents sparse-checkout set skills`.
+- **Agent edits `.agents`**: stop it; the directory is read-only in both modes.
+- **Cannot clone the harness**: use a local clone and the local quick start, or
+  use `--skills-mode copy`.
 
 ## Next
 

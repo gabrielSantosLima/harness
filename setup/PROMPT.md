@@ -20,7 +20,7 @@ You are configuring the repository in the current working directory using the
 public harness at https://github.com/gabrielSantosLima/harness.
 
 Goal: apply the harness setup (agent guidelines, commit policy, versioning,
-release notes, CI, build, deploy and the .agent skill reference) to this
+release notes, CI, build, deploy and the .agents skill reference) to this
 repository, without touching application code.
 
 Step 1. Fetch the harness outside this repository.
@@ -46,8 +46,8 @@ Step 3. Follow setup/SETUP.md exactly.
 
   - Choose the mode: new, adopt, update or audit.
   - Detect first: git remote, branch, tags, recent commits, AGENTS.md,
-    .harness.json, .agent, docs/RELEASE_TEMPLATE.md, scripts/release-notes.*,
-    .github/workflows/*, index.html.
+    CLAUDE.md, GEMINI.md, .harness.json, .agents, docs/RELEASE_TEMPLATE.md,
+    scripts/release-notes.*, .github/workflows/*, index.html.
   - Never infer a stack, framework, architecture, dependency or package manager.
   - Interview using setup/questions.md: at most four questions per round,
     multiple choice when possible, recommended option first.
@@ -93,7 +93,7 @@ Rules:
   - Never modify application code.
   - Never commit, push or tag. The user decides when.
   - Never invent answers; ask.
-  - Never write into .agent/; it is read-only.
+  - Never write into .agents/; it is read-only.
   - Never change the locked decisions in setup/decisions.md from this repository.
   - If the network blocks the clone, ask the user to clone the harness and
     provide its path.
@@ -103,7 +103,7 @@ Rules:
 
 - The prompt works with any agent that can run shell commands and read files.
 - The harness clone is temporary and lives outside the target repository.
-- `.agent` is added as a submodule pinned to the same commit recorded in
+- `.agents` is added as a submodule pinned to the same commit recorded in
   `.harness.json` when that commit is reachable.
 - The canonical playbook is `setup/SETUP.md`; this file only bootstraps it.
 

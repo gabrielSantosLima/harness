@@ -61,14 +61,14 @@ To run a single skill without configuring the repository, use the
 - Conventional Commits and a safe staging policy;
 - Semantic Versioning, a manual `Release` workflow and generated release notes;
 - CI, build and deploy workflows chosen per project;
-- `.agent/`, a pinned submodule that exposes the skill library;
+- `.agents/`, the skill library as a pinned submodule or a copy;
 - `.harness.json`, the committed setup state used for updates and audits.
 
 ## Principles
 
 - **Universal**: the same rules for every project, independent of tooling.
 - **Deterministic**: templates and a renderer, not free-form generation.
-- **Agent-agnostic**: `AGENTS.md` plus files under `.agent/skills`.
+- **Agent-agnostic**: `AGENTS.md`, `CLAUDE.md` and `GEMINI.md` bridges, plus files under `.agents/skills`.
 - **Safe**: never commits, pushes, tags or overwrites user content on its own.
 
 ## Languages

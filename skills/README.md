@@ -3,7 +3,8 @@
 Universal, agent-agnostic skills. Each skill is a directory with a `SKILL.md`
 file; supporting scripts and references live beside it.
 
-Agents read `.agent/skills/<id>/SKILL.md` in generated projects. In this
+Agents read `.agents/skills/<id>/SKILL.md` in generated projects, and tools that
+follow the Agent Skills standard also discover that path natively. In this
 repository, the source of truth is `skills/`.
 
 | Skill | Purpose | Project default |
@@ -33,6 +34,6 @@ permanently.
   it; otherwise it asks in plain text.
 - Supporting files stay inside the skill directory and are referenced by
   relative path.
-- Never write into `.agent/`.
+- Never write into `.agents/`.
 
 See `skills/add-skill/SKILL.md` for the full checklist.

@@ -8,7 +8,7 @@ description: Requirements, quick starts, your first setup, and updates.
 ## Requirements
 
 - **Node.js 20+** for the renderer, verifier and release scripts.
-- **Git**, with submodule support in the target repository.
+- **Git**, with submodule support in the target repository when using submodule mode.
 - **GitHub CLI (`gh`)** to cut releases and inspect runs.
 - **SSH or HTTPS access** to the harness repository.
 
@@ -29,7 +29,7 @@ interviews you, shows the plan, renders, verifies and removes the clone. It neve
 commits, pushes or tags.
 
 Use this mode when you want the full setup: `AGENTS.md`, `.harness.json`, CI,
-release automation and `.agent/skills`.
+release automation and `.agents/skills`.
 
 To run only one skill, see [Run a skill remotely](../skills/skills.md#run-a-skill-remotely).
 
@@ -52,6 +52,17 @@ node scripts/verify-setup.mjs <path-to-project>
 Add `--dry-run` first to review the actions. `--merge` preserves an existing
 `AGENTS.md`. The renderer never commits.
 
+Without a submodule, copy the selected skills instead:
+
+```bash
+node scripts/render.mjs \
+  --answers <answers.json> \
+  --target <path-to-project> \
+  --merge \
+  --skills-mode copy \
+  --commit "$(git rev-parse HEAD)"
+```
+
 ## Your first setup
 
 A complete web project example:
@@ -72,8 +83,10 @@ Generated files:
 
 ```text
 AGENTS.md
+CLAUDE.md                      imports AGENTS.md
+GEMINI.md                      imports AGENTS.md
 .harness.json
-.agent/                        submodule, skills only
+.agents/                       submodule or copy, skills only
 docs/RELEASE_TEMPLATE.md
 scripts/release-notes.mjs
 scripts/next-version.mjs
@@ -86,7 +99,7 @@ scripts/next-version.mjs
 .gitignore
 ```
 
-The result ends with `13/13 checks passed`.
+The result ends with `14/14 checks passed`.
 
 ## After setup
 
@@ -106,9 +119,18 @@ The first release is `v0.1.0`.
 
 ## Updates
 
+Submodule mode:
+
 ```bash
-git submodule update --remote .agent
+git submodule update --remote .agents
 node scripts/render.mjs --answers .harness.json --target . --merge
+node scripts/verify-setup.mjs .
+```
+
+Copy mode:
+
+```bash
+node scripts/render.mjs --answers .harness.json --target . --merge --skills-mode copy
 node scripts/verify-setup.mjs .
 ```
 

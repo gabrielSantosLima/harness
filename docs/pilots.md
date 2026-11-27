@@ -21,10 +21,11 @@ node tests/pilot.mjs
 
 What the pilots assert:
 
-- `.agent/skills/<id>/SKILL.md` exists and `.agent/templates` is hidden by the
+- `.agents/skills/<id>/SKILL.md` exists and `.agents/templates` is hidden by the
   sparse checkout;
+- `CLAUDE.md` and `GEMINI.md` exist and import `AGENTS.md`;
 - `.harness.json` records the pinned harness commit;
-- `verify-setup` passes with 13/13 checks;
+- `verify-setup` passes with 14/14 checks;
 - the pilot creates no commit, push or tag;
 - an existing `AGENTS.md` keeps its introduction and custom sections, and gains
   only the missing harness sections;
@@ -50,15 +51,15 @@ node scripts/render.mjs \
 node scripts/verify-setup.mjs mimose-pilot
 ```
 
-Result: 13/13 checks passed.
+Result: 14/14 checks passed.
 
 | Action | Files |
 | --- | --- |
 | Merged | `AGENTS.md` (existing content preserved) |
-| Created | `scripts/release-notes.mjs`, `scripts/next-version.mjs`, `.github/workflows/ci.yml`, `.github/pull_request_template.md`, `.github/CODEOWNERS`, `.harness.json` |
+| Created | `CLAUDE.md`, `GEMINI.md`, `scripts/release-notes.mjs`, `scripts/next-version.mjs`, `.github/workflows/ci.yml`, `.github/pull_request_template.md`, `.github/CODEOWNERS`, `.harness.json` |
 | Appended | `.gitignore` |
 | Skipped | `docs/RELEASE_TEMPLATE.md`, `.github/workflows/release.yml`, `.github/workflows/deploy.yml` (already existed) |
-| Submodule | `.agent` added, sparse checkout limited to `skills/` |
+| Submodule | `.agents` added, sparse checkout limited to `skills/` |
 
 Observations:
 
@@ -87,11 +88,11 @@ The prompt itself was not executed by a remote agent in this run.
 
 - Adoption does not merge existing workflow content; it skips the file and
   reports it. Reconciling is an agent task.
-- The `.agent` submodule was added from a local path in the pilots. The remote
+- The `.agents` submodule was added from a local path in the pilots. The remote
   HTTPS URL follows the same commands and is used by `setup/PROMPT.md`.
-- The Claude Code global pointer is documented but not exercised here.
+- Copy mode is covered by the automated suite, not by this adoption pilot.
 - `verify-setup` runs from the harness tree, not from the target, because
-  `.agent` contains only `skills/`.
+  `.agents` contains only `skills/`.
 
 ## Reproducing
 

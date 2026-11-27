@@ -18,7 +18,9 @@ node scripts/render.mjs --answers <file> --target <dir> [flags]
 | `--dry-run` | Print actions, write nothing |
 | `--merge` | Merge missing sections into an existing `AGENTS.md` |
 | `--force` | Overwrite generated files |
-| `--submodule <url>` | Add `.agent`, restricted to `skills/` |
+| `--skills-mode <mode>` | `submodule`, `copy` or `none` |
+| `--skills-path <dir>` | Skill root, `.agents` by default |
+| `--submodule <url>` | Add the submodule at the skills path (implies `submodule` mode) |
 | `--commit <hash>` | Record the harness commit |
 | `--skills-root <path>` | Skill path used in `AGENTS.md` |
 
@@ -48,12 +50,30 @@ Exit code `0` when every check passes, `1` otherwise.
 8. The deploy workflow matches the target.
 9. Workflow commands match `.harness.json`.
 10. `AGENTS.md` lists the selected skills.
-11. `.agent` exposes the selected skills (note if uninitialized).
-12. `.gitignore` covers the declared patterns.
-13. Hygiene files match the configuration.
+11. `.agents` exposes the selected skills (note if uninitialized).
+12. `CLAUDE.md` and `GEMINI.md` exist and reference `AGENTS.md`.
+13. `.gitignore` covers the declared patterns.
+14. Hygiene files match the configuration.
 
 It does not prove that checks pass, that workflows are valid YAML or that the
 project builds.
+
+## Agent compatibility
+
+| Tool | Instruction file | Skill discovery |
+| --- | --- | --- |
+| Codex CLI | `AGENTS.md` (native) | `.agents/skills/` |
+| Claude Code | `CLAUDE.md` (bridge that imports `AGENTS.md`) | follows the `.agents/skills/` pointer in `AGENTS.md`; native path is `.claude/skills/` |
+| Cline | `AGENTS.md` (native) | `.cline/skills/`, `.clinerules/skills/`, `.claude/skills/`; pointer works too |
+| OpenCode | `AGENTS.md` (native) | `.opencode/skills/`, `.claude/skills/`, `.agents/skills/` |
+| Gemini CLI | `GEMINI.md` (bridge that imports `AGENTS.md`) | `.gemini/skills/`, `.agents/skills/` |
+| Claude Desktop | account-level, no repository file | upload the skill folder from Settings |
+
+`.agents/skills/<id>/SKILL.md` is the interoperable Agent Skills location. The
+harness never uses `.agent` (singular): no major tool recognizes it. Claude Code
+and Gemini CLI get thin bridges because they prefer their own instruction file
+names; neither bridge duplicates the rules.
+
 
 ## .harness.json
 
@@ -70,6 +90,7 @@ project builds.
 | `release` | `trigger`, `notesLanguage`, `sections`, `attachArtifacts` |
 | `deploy` | `target`, `trigger`, `artifact` |
 | `skills` | Selected skill IDs |
+| `skillsSource` | `mode`: `submodule`, `copy` or `none`; `path`; optional `url` |
 | `hygiene` | `pullRequestTemplate`, `codeowners`, `codeownersOwner` |
 | `ignore` | Local-only patterns |
 
@@ -90,7 +111,8 @@ project builds.
     "notesLanguage": "en",
     "attachArtifacts": false
   },
-  "skills": ["commit-and-push"]
+  "skills": ["commit-and-push"],
+  "skillsSource": { "mode": "submodule", "path": ".agents" }
 }
 ```
 

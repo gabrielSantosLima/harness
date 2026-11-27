@@ -12,9 +12,9 @@ self-contained and agent-agnostic.
 
 - **Harness repository** (the working tree contains `setup/decisions.md` and
   `skills/`): write the skill directly to `skills/<id>/SKILL.md`.
-- **Generated project** (`.agent/` is a read-only submodule): write a proposal
+- **Generated project** (`.agents/` is a read-only submodule or copy): write a proposal
   to `docs/skill-proposals/<id>.md` and tell the user to apply it in the harness
-  repository. Never write into `.agent/`.
+  repository. Never write into `.agents/`.
 
 ## 2. Define the skill
 
@@ -81,7 +81,7 @@ project needs it.
 
 ## Boundaries
 
-- Never write into `.agent/`.
+- Never write into `.agents/`.
 - Never add a skill that duplicates an existing one; extend the existing skill
   instead.
 - Never include credentials, tokens or user-specific paths.
