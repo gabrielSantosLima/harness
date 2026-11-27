@@ -49,8 +49,9 @@ Step 3. Follow setup/SETUP.md exactly.
     CLAUDE.md, GEMINI.md, .harness.json, .agents, docs/RELEASE_TEMPLATE.md,
     scripts/release-notes.*, .github/workflows/*, index.html.
   - Never infer a stack, framework, architecture, dependency or package manager.
-  - Interview using setup/questions.md: at most four questions per round,
-    multiple choice when possible, recommended option first.
+  - Interview using setup/questions.md: start with what the project is about,
+    then ask at most four questions per round, multiple choice when possible,
+    recommended option first.
   - Write the answers JSON following setup/answers.example.json.
   - Print the answers, the resulting file tree, the diffs of existing files and
     the recorded commands. Wait for explicit approval before writing.

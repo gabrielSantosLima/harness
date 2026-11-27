@@ -49,9 +49,9 @@ Never infer a stack, framework, architecture, dependency or package manager.
 
 ## 3. Interview
 
-Follow `setup/questions.md`: at most four questions per round, multiple choice
-when possible, recommended option first. Skip questions already answered by
-detection or by `.harness.json`.
+Follow `setup/questions.md`: start with what the project is about, then ask at
+most four questions per round, multiple choice when possible, recommended option
+first. Skip questions already answered by detection or by `.harness.json`.
 
 If your agent has a dedicated question tool, use it; otherwise ask in plain text
 and wait for the answer.

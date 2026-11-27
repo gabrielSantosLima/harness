@@ -4,73 +4,76 @@ Rules for the interview:
 
 - Detect before asking. If the repository, its manifests or its workflows answer
   a question, show the detected value and ask only for confirmation.
+- **Open every interview with question 1.** The purpose comes before the name,
+  the type and every technical choice; never ask for a name first.
 - Ask at most four questions per round, using a multiple-choice question when
   possible, with the recommended option first.
 - Skip questions that do not apply (for example deploy for a `library`).
 - Never ask about stacks, frameworks, architecture or dependencies.
 - Record every answer in `.harness.json`.
 
-## Round 1 — Identity
+## Round 1 — Purpose and identity
 
 | # | Question | Default / detection |
 | --- | --- | --- |
-| 1 | Project name | Directory name |
-| 2 | Slug (lowercase, kebab-case) | Derived from the name |
-| 3 | One-line description | Required |
+| 1 | What is the project about? Ask for the problem it solves, who it serves and what it does. | Required; recorded as `project.description` |
+| 2 | Project name | Directory name |
+| 3 | Slug (lowercase, kebab-case) | Derived from the name |
 | 4 | GitHub `owner/repo` | Parsed from `git remote` |
-| 5 | License | `MIT` |
-| 6 | Project type: `web`, `mobile`, `desktop`, `library`, `data` | Detect web `index.html`; otherwise ask |
 
-## Round 2 — Git and agent policy
+## Round 2 — Project and git policy
 
 | # | Question | Default |
 | --- | --- | --- |
+| 5 | Project type: `web`, `mobile`, `desktop`, `library`, `data` | Detect web `index.html`; otherwise ask |
+| 6 | License | `MIT` |
 | 7 | Commit autonomy: commit and push when asked / commit only / strict | Commit and push when asked |
 | 8 | Existing `AGENTS.md`: merge / replace / abort | Merge missing sections |
-| 9 | Harness source for `.agents` and pinned commit | `git@github.com:gabrielSantosLima/harness.git` |
-| 10 | Skills to expose | All default skills; `github-pages`, `readme` and `logo` are optional |
-| 11 | README: leave untouched / add standard sections / create if missing | Ask |
-| 12 | Default branch | `main` |
-| 13 | First tag | `v0.1.0` |
 
-## Round 3 — Quality and CI/build
+## Round 3 — Skills and README
 
 | # | Question | Default |
 | --- | --- | --- |
-| 14 | Check commands (format, lint, typecheck, tests, validation) | Empty, free text |
-| 15 | CI depth: `full` (CI + build), `ci` (checks only), `release-only` | Ask |
-| 16 | CI operating systems | `ubuntu-latest` |
-| 17 | Build command | Ask when `full` |
-| 18 | Build artifact paths | Ask when `full` |
+| 9 | Skills to expose | All default skills; `github-pages`, `readme` and `logo` are optional |
+| 10 | Harness source for `.agents` and pinned commit | `git@github.com:gabrielSantosLima/harness.git` |
+| 11 | README: leave untouched / add standard sections / create if missing | Ask |
+
+## Round 4 — Quality and CI/build
+
+| # | Question | Default |
+| --- | --- | --- |
+| 12 | Check commands (format, lint, typecheck, tests, validation) | Empty, free text |
+| 13 | CI depth: `full` (CI + build), `ci` (checks only), `release-only` | Ask |
+| 14 | CI operating systems | `ubuntu-latest` |
+| 15 | Build command and artifact paths (only when `full`) | Ask |
+
+## Round 5 — Versioning and release
+
+| # | Question | Default |
+| --- | --- | --- |
+| 16 | Version source: tags only / file plus field | Tags only |
+| 17 | Release-notes language | English (suggested) |
+| 18 | Release-notes sections | Features, Fixes, Refactor/Chore/Docs, Other, Known issues |
 | 19 | Attach build artifacts to the release | Yes when `full` |
 
-## Round 4 — Versioning, release and deploy
+## Round 6 — Deploy and hygiene
 
 | # | Question | Default |
 | --- | --- | --- |
-| 20 | Version source: tags only / file plus field | Tags only |
-| 21 | Release-notes language | English (suggested) |
-| 22 | Release-notes sections | Features, Fixes, Refactor/Chore/Docs, Other, Known issues |
-| 23 | Deploy target (only for `web` and `data`): GitHub Pages / other / none | None |
-| 24 | Deploy trigger (only when a target exists): on release / on push / manual | On release |
-
-## Round 5 — Hygiene
-
-| # | Question | Default |
-| --- | --- | --- |
-| 25 | Generate pull request template | Yes |
-| 26 | Generate `CODEOWNERS` and its owner | Yes, repository owner |
-| 27 | Local-only patterns to ignore | `PLAN.md`, notes, `.env`, secrets, build output, caches |
+| 20 | Deploy target (only for `web` and `data`): GitHub Pages / other / none | None |
+| 21 | Deploy trigger (only when a target exists): on release / on push / manual | On release |
+| 22 | Hygiene files: pull request template and `CODEOWNERS` | Yes, repository owner |
+| 23 | Local-only patterns to ignore | `PLAN.md`, notes, `.env`, secrets, build output, caches |
 
 ## Detection sources
 
 - `git remote get-url origin` — owner and repository.
 - `git tag --sort=-v:refname | head -n1` — current version and tag style.
 - `git log --no-merges --pretty=format:%s -n 30` — existing commit style.
-- `AGENTS.md` — existing agent rules.
+- `AGENTS.md`, `CLAUDE.md`, `GEMINI.md` — existing agent rules and bridges.
 - `docs/RELEASE_TEMPLATE.md`, `scripts/release-notes.*` — existing release notes.
 - `.github/workflows/*` — existing CI, build and deploy coverage.
-- `.agents` — existing harness submodule and pinned commit.
+- `.agents` — existing harness skills, delivery mode and pinned commit.
 - `.harness.json` — previous answers; in `update` mode they replace the
   interview except for questions the user explicitly wants to change.
 - `index.html` — strong signal for `web`.

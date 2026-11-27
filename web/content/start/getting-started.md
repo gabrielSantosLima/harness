@@ -69,6 +69,7 @@ A complete web project example:
 
 | Question | Answer |
 | --- | --- |
+| What the project is about | A demo web project that shows the harness |
 | Project type | `web` |
 | Commit autonomy | Commit and push when asked |
 | Checks | `npm run lint`, `npm test` |

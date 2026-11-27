@@ -8,15 +8,16 @@ description: Interview rounds, commit policy, versioning, release notes, hygiene
 ## Interview
 
 The agent follows `setup/questions.md`, detects before asking and asks at most
-four questions per round.
+four questions per round. The first question is always what the project is about.
 
 | Round | Topics |
 | --- | --- |
-| 1 | Identity, project type, license, commit autonomy |
-| 2 | Existing `AGENTS.md`, harness source, skills, README, branch |
-| 3 | Checks, CI depth, OS matrix, build and artifacts |
-| 4 | Version source, release language and notes, deploy |
-| 5 | Hygiene files and local-only ignores |
+| 1 | Purpose, name, slug, owner/repo |
+| 2 | Project type, license, commit autonomy, existing `AGENTS.md` |
+| 3 | Skills, harness source, README |
+| 4 | Checks, CI depth, OS matrix, build and artifacts |
+| 5 | Version source, release language and notes, artifacts |
+| 6 | Deploy, hygiene files, local-only ignores |
 
 Before writing, the agent shows the detection summary, the answers file, the
 resulting tree, diffs for existing files and the exact commands. It waits for
@@ -24,8 +25,9 @@ approval.
 
 ## Identity
 
+- What the project is about: the problem, who it serves and what it does. This
+  is the first question and becomes `project.description`.
 - Project name and slug.
-- One-line description.
 - License, `MIT` by default.
 - `owner/repo`, detected from the remote.
 - Default branch, `main` by default.

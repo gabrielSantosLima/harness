@@ -55,9 +55,11 @@ Rules:
 
 ## Phase 1 — Interview
 
-Follow `setup/questions.md`. Ask at most four questions per round. Prefer
-multiple-choice questions with the recommended option first. If the agent has a
-dedicated question tool, use it; otherwise ask in plain text and wait.
+Follow `setup/questions.md`. Open with question 1: what the project is about.
+The purpose comes before the name, the type and every technical choice. Ask at
+most four questions per round. Prefer multiple-choice questions with the
+recommended option first. If the agent has a dedicated question tool, use it;
+otherwise ask in plain text and wait.
 
 Do not ask about technology stacks, architecture, dependencies, package
 managers or file layout.

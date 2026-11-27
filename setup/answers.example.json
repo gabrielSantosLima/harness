@@ -3,7 +3,7 @@
   "project": {
     "name": "Example",
     "slug": "example",
-    "description": "One line describing what the project is.",
+    "description": "What the project is about: the problem it solves and who it serves.",
     "type": "web",
     "license": "MIT",
     "owner": "gabrielSantosLima",
